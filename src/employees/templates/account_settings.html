@@ -1,0 +1,155 @@
+{% extends "layouts/dashboard_layout.html" %}
+{% load static %}
+{% block title %}
+  <title>My Dashboard | EasyPay</title>
+{% endblock title %}
+{% block content %}
+  <div class="container-fluid">
+    <div class="row gx-0">
+      <!-- Sidebar -->
+      <nav class="col-2">
+        <div class=" sidebar d-flex flex-column">
+          <!-- Sidebar Header -->
+          <div class="sidebar-header text-center">
+            <a href="{% url 'home' %}">
+              <img src="{% static 'images/logo.png' %}" alt="" width="62" height="62" />
+              <h4 class="mb-0">EasyPay</h4>
+            </a>
+          </div>
+          <!-- Sidebar Links -->
+          <div class="sidebar-body text-white">
+            <ul class="nav flex-column">
+              <li class="nav-item py-2">
+                <a class="nav-link active" href="{% url 'employee_dashboard' %}">
+                  <i class="bi bi-grid-fill me-2"></i>
+                  <span>Dashboard</span>
+                </a>
+              </li>
+              <li class="nav-item py-2">
+                <a class="nav-link" href="{% url 'salary_breakdown' %}">
+                  <i class="bi bi-clipboard-data-fill me-2"></i>
+                  <span>Salary Breakdown</span>
+                </a>
+              </li>
+              <li class="nav-item py-2">
+                <a class="nav-link" href="{% url 'account_settings' %}">
+                  <i class="bi bi-person-fill-gear me-2"></i>
+                  <span>Account Settings</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <!-- Sidebar Footer -->
+          <div class="sidebar-footer text-center mb-4">
+            <a class="nav-link" href="{% url 'logout_employee' %}">
+              <i class="bi bi-box-arrow-left me-2"></i>
+              <span>Logout</span>
+            </a>
+          </div>
+        </div>
+      </nav>
+      <!-- Main Content -->
+      <main class="col-10 main-content">
+        <nav class="navbar navbar-expand-lg dash-nav">
+          <div class="container-fluid">
+            <h1 class="navbar-brand fw-bold" style="font-size: 1.5rem">Account Settings</h1>
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                  <div class="dropdown">
+                    <button class="btn dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                      <i class="bi bi-person-circle me-1" style="font-size: 1.5rem"></i>
+                      <span class="fw-bold" style="font-size: 1.1rem;">{{ user.username }}</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a class="dropdown-item" href="{% url 'account_settings' %}">
+                          <i class="bi bi-person-gear me-1"></i>
+                          <span>Account Settings</span></a>
+                      </li>
+                      <li>
+                        <hr class="dropdown-divider" />
+                      </li>
+                      <li>
+                        <a class="dropdown-item" href="{% url 'logout_employee' %}">
+                          <i class="bi bi-box-arrow-left me-1"></i>
+                          <span>Logout</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <!-- Cards -->
+        <div class="card card1">
+          <div class="card-header">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person-fill-gear me-2" style="font-size: 1.5rem"></i>
+              <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Account Settings</h5>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>Update your username or password.</p>
+            <form method="POST">
+              {% csrf_token %}
+              <!-- Username Field -->
+              <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="username"
+                       name="username"
+                       value="{{ user.username }}"
+                       placeholder="Enter your username"
+                       required>
+                <label for="username" class="form-label text-black-50">Username</label>
+              </div>
+              <!-- Old Password Field -->
+              <div class="form-floating mb-3">
+                <input type="password"
+                       class="form-control"
+                       name="old_password"
+                       id="old_password"
+                       placeholder="Enter your current password">
+                <label for="old_password" class="form-label text-black-50">Old Password</label>
+              </div>
+              <!-- New Password Field -->
+              <div class="form-floating mb-3">
+                <input type="password"
+                       class="form-control"
+                       name="new_password"
+                       id="new_password"
+                       placeholder="Enter your new password">
+                <label for="new_password" class="form-label text-black-50">New Password</label>
+              </div>
+              <!-- Confirm New Password Field -->
+              <div class="form-floating mb-3">
+                <input type="password"
+                       class="form-control"
+                       id="confirm_password"
+                       name="confirm_password"
+                       placeholder="Confirm your new password">
+                <label for="confirm_password" class="form-label text-black-50">Confirm Password</label>
+              </div>
+              <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock content %}

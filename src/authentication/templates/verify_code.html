@@ -1,0 +1,55 @@
+{% extends "layouts/form_layout.html" %}
+{% load static %}
+{% block content %}
+  <div class="form-container">
+    <div class="card shadow-lg p-4 form-card">
+      <div class="card-header text-center">
+        <div id="account_page_logo" class="mb-2">
+          <a href="{% url 'home' %}">
+            <img src="{% static 'images/logo-white.png' %}"
+                 alt=""
+                 width="48"
+                 height="64">
+          </a>
+        </div>
+        <h4 class="mb-0">Employee Verification</h4>
+      </div>
+      <div class="card-body">
+        <p class="text-center">Enter the code we sent to your email.</p>
+        <form method="post" action="{% url 'verify_code' %}">
+          {% csrf_token %}
+          <div class="segmented-input text-center mb-3">
+            <input type="text" maxlength="1" id="code1" name="code1" required />
+            <input type="text" maxlength="1" id="code2" name="code2" required />
+            <input type="text" maxlength="1" id="code3" name="code3" required />
+            <input type="text" maxlength="1" id="code4" name="code4" required />
+            <input type="text" maxlength="1" id="code5" name="code5" required />
+            <input type="text" maxlength="1" id="code6" name="code6" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-100">Verify</button>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <small>Didn't receive a code?
+          <a href="{% url 'resend_otp' id_number %}">Resend Code</a></small>
+      </div>
+    </div>
+  </div>
+  <script>
+    const inputs = document.querySelectorAll(".segmented-input input");
+
+    inputs.forEach((input, index) => {
+      input.addEventListener("input", (e) => {
+        if (e.target.value.length === 1 && index < inputs.length - 1) {
+          inputs[index + 1].focus();
+        }
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Backspace" && e.target.value.length === 0 && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+  </script>
+{% endblock content %}

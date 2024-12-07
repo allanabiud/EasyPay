@@ -1,0 +1,174 @@
+@font-face {
+  font-family: "Lato", sans-serif;
+  src: url("../fonts/Lato-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #b5b5b5;
+}
+
+/* Navbar */
+.navbar-brand h1 {
+  font-size: 2.5rem;
+  color: #3626a7;
+  font-weight: bold;
+  margin-top: 10px;
+}
+.nav .btn {
+  font-size: 1.1rem;
+}
+.nav-admin-btn {
+  color: #3626a7;
+  border: 3px solid #3626a7;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 5;
+}
+.nav-admin-btn:hover {
+  color: #fff;
+  background-color: #3626a7;
+}
+
+.nav-employee-btn {
+  color: #fff;
+  background-color: #1d537d;
+  border: 3px solid #1d537d;
+  border-radius: 0;
+  padding: 5;
+}
+.nav-employee-btn:hover {
+  color: #1d537d;
+  background-color: transparent;
+  border: 3px solid #1d537d;
+}
+
+/* Hero Section */
+.hero-section {
+  margin: 0 auto;
+  padding: 10px;
+}
+.hero-container {
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  gap: 5px; /* Controls space between text elements */
+}
+
+.hero-title {
+  color: #0d0106;
+  letter-spacing: -0.5px;
+  font-size: 2.8rem;
+  font-weight: bold;
+  line-height: 1.3;
+}
+.hero-title span {
+  color: #3626a7;
+  font-weight: bolder;
+  font-size: 5rem;
+}
+.hero-description {
+  color: #0d0106;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+.hero-question-container {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.hero-question {
+  color: #3626a7;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.hero-btn {
+  color: #fff;
+  background-color: #1d537d;
+  border: 3px solid #1d537d;
+  border-radius: 0;
+  padding: 10px;
+  width: 30%;
+}
+.hero-btn:hover {
+  color: #3626a7;
+  background-color: transparent;
+  border: 3px solid #3626a7;
+}
+
+/* Action Cards */
+.action-cards {
+  background-color: #3626a7;
+}
+.card {
+  border-radius: 20px;
+  border: none;
+  background-color: #dbdbdb;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.card:hover {
+  top: -5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.card1 h5 {
+  color: #3626a7;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.card2 h5 {
+  color: #1d537d;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.card-btn1 {
+  color: #ffffff;
+  background-color: #3626a7;
+  border: 3px solid #3626a7;
+  border-radius: 0;
+  padding: 10px;
+}
+.card-btn1:hover {
+  color: #3626a7;
+  background-color: #ffffff;
+  border: 3px solid #3626a7;
+}
+.card-btn2 {
+  color: #ffffff;
+  background-color: #1d537d;
+  border: 3px solid #1d537d;
+  border-radius: 0;
+  padding: 10px;
+}
+.card-btn2:hover {
+  color: #1d537d;
+  background-color: #ffffff;
+  border: 3px solid #1d537d;
+}
+
+/* Contact Us */
+.contact-us {
+  background-color: #1d537d;
+  color: #ffffff;
+}
+.contact-us-social-icons a {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+.contact-us-btn {
+  color: #ffffff;
+  background-color: transparent;
+  border: 3px solid #ffffff;
+  border-radius: 0;
+  padding: 10px;
+  width: 100%;
+}
+.contact-us-btn:hover {
+  color: #1d537d;
+  background-color: #ffffff;
+  border: 3px solid #ffffff;
+}

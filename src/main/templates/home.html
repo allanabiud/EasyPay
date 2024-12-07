@@ -1,0 +1,160 @@
+{% extends "layouts/main_layout.html" %}
+{% load static %}
+{% block title %}
+  <title>Home | EasyPay</title>
+{% endblock title %}
+{% block body %}
+  <!-- Navbar -->
+  <div class="container-fluid mt-2">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold mb-0" href="#">
+          <div class="d-flex align-items-center">
+            <img src="{% static 'images/logo.png' %}" alt="" width="54" height="54">
+            <h1 class="mb-0">EasyPay</h1>
+          </div>
+        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end"
+             id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item me-3">
+              <a class="nav-link contact-us-nav-btn fw-bold"
+                 style="font-size: 1.1rem"
+                 href="#contact-us">Contact Us</a>
+            </li>
+            <li class="nav-item me-3">
+              <a class="btn nav-admin-btn" href="admin/">Admin Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn nav-employee-btn" href="{% url 'login_employee' %}">Employee Dashboard</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  {# Main Content #}
+  <main>
+    {# Hero Section #}
+    <section class="hero-section mt-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 hero-section">
+            <div class="hero-container">
+              <h1 class="hero-title">
+                Effortless Payroll Management with <span>EasyPay</span>
+              </h1>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="hero-description">
+              <p>Simplify salary calculations, streamline deductions, and ensure accurate payments - all in one place.</p>
+            </div>
+            <div class="hero-question-container mt-3">
+              <span class="hero-question">Why EasyPay?</span>
+              <div class="list mt-2">
+                <div class="list-item mb-2">
+                  <i class="bi bi-check-circle-fill me-2" style="color: #1d537d"></i>
+                  <span>Hassle-free Payroll calculations</span>
+                </div>
+                <div class="list-item mb-2">
+                  <i class="bi bi-check-circle-fill me-2" style="color: #1d537d"></i>
+                  <span>Intuitive Dashboards</span>
+                </div>
+                <div class="list-item mb-2">
+                  <i class="bi bi-check-circle-fill me-2" style="color: #1d537d"></i>
+                  <span>Comprehensive Reports</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {# Action Cards #}
+    <section class="action-cards p-5 mt-2">
+      <div class="container p-3">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-6">
+            <div class="card card1 p-3">
+              <div class="card-body">
+                <i class="bi bi-person-fill-gear"
+                   style="font-size: 3rem;
+                          color: #3626a7"></i>
+                <h5 class="card-title">Admin?</h5>
+                <p class="card-text">Login to manage employees, job groups and more.</p>
+                <a href="{% url 'login_admin' %}" class="btn card-btn1">Admin Login</a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card card2 p-3">
+              <div class="card-body">
+                <i class="bi bi-person-fill" style="font-size: 3rem; color: #1d537d"></i>
+                <h5 class="card-title">Employee?</h5>
+                <p class="card-text">Login to view your salary and generate reports.</p>
+                <a href="{% url 'login_employee' %}" class="btn card-btn2">Employee Login</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {# Contact Us #}
+    <section class="contact-us" id="contact-us">
+      <div class="container p-5">
+        <div class="row">
+          <div class="col-md-6 contact-us-left">
+            <h2 class="contact-us-title">Contact Us</h2>
+            <p class="contact-us-text">Reach out to us anytime with any questions or concerns.</p>
+            <div class="d-flex contact-us-social-icons">
+              <a href="https://www.linkedin.com/in/EasyPay/">
+                <i class="bi bi-linkedin me-2"></i>
+              </a>
+              <a href="https://facebook.com/EasyPay">
+                <i class="bi bi-facebook me-2"></i>
+              </a>
+              <a href="https://twitter.com/EasyPay">
+                <i class="bi bi-twitter me-2"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-md-6 contact-us-right">
+            <form class="contact-us-form">
+              <div class="form-floating mb-3">
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       placeholder="Enter your name">
+                <label for="name" class="text-black-50">Name</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="email"
+                       class="form-control"
+                       id="email"
+                       placeholder="Enter your email">
+                <label for="email" class="text-black-50">Email</label>
+              </div>
+              <div class="form-group mb-3">
+                <textarea class="form-control"
+                          id="message"
+                          rows="4"
+                          placeholder="Enter your message"></textarea>
+              </div>
+              <button type="submit" class="btn contact-us-btn mt-3">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock body %}

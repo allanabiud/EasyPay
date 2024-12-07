@@ -1,0 +1,102 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salary Breakdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007BFF; /* Blue background for headers */
+            background-color: #f2f2f2;
+        }
+        .table-success {
+            background-color: #D4EDDA;
+        }
+        td {
+            background-color: #f9f9f9; /* Light background for table rows */
+        }
+    </style>
+  </head>
+  <body>
+    <h1>Salary Breakdown</h1>
+    <p>
+      <strong>ID Number:</strong> {{ employee.id_number }}
+    </p>
+    <p>
+      <strong>Employee:</strong> {{ employee.first_name }} {{ employee.last_name }}
+    </p>
+    <p>
+      <strong>Job Group:</strong> {{ job_group.name }}
+    </p>
+    <table>
+      <thead>
+        <tr class="table-header">
+          <th scope="col" class="text-uppercase">Description</th>
+          <th scope="col" class="text-uppercase">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="fw-bold">Base Salary</td>
+          <td class="fw-bold">{{ base_salary|floatformat:2|intcomma }}</td>
+        </tr>
+        {# Allowance Section #}
+        <tr>
+          <td colspan="2" class="fw-bold text-uppercase">Allowances</td>
+        </tr>
+        {% for allowance in allowances %}
+          <tr>
+            <td>{{ allowance.name }}</td>
+            <td>
+              {% if allowance.calculation_type == "percentage" %}
+                {{ allowance.amount|floatformat:2|intcomma }}
+                ({{ allowance.value|floatformat:2|intcomma }}% of Base Salary)
+              {% else %}
+                {{ allowance.amount|floatformat:2|intcomma }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        {# Deduction Section #}
+        <tr>
+          <td colspan="2" class="fw-bold text-uppercase">Deductions</td>
+        </tr>
+        {% for deduction in deductions %}
+          <tr>
+            <td>{{ deduction.name }}</td>
+            <td>
+              {% if deduction.calculation_type == "percentage" %}
+                {{ deduction.amount|floatformat:2|intcomma }}
+                ({{ deduction.value|floatformat:2|intcomma }}% of Base Salary)
+              {% else %}
+                {{ deduction.amount|floatformat:2|intcomma }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        <tr class="table-success">
+          <td colspan="1">
+            <strong>Net Salary</strong>
+          </td>
+          <td>
+            <strong>{{ net_salary|floatformat:2|intcomma }}</strong>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

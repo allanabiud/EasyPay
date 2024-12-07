@@ -1,0 +1,58 @@
+@font-face {
+  font-family: "Lato", sans-serif;
+  src: url("../fonts/Lato-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  background-color: #b5b5b5;
+}
+
+/* Form Layout */
+.form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+.card {
+  width: 400px;
+}
+.form-card {
+  background-color: #3626a7;
+  color: #ffffff;
+  border-radius: 20px;
+}
+
+/* Form Elements */
+.form-control {
+  color: #0d0106;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.1rem;
+}
+
+.admin-card {
+  border-width: 2px;
+  border-color: #ffffff;
+}
+.contact-us-card {
+  /* remove width */
+  width: 50%;
+}
+.contact-us-btn {
+  color: #ffffff;
+  background-color: transparent;
+  border: 3px solid #ffffff;
+  border-radius: 0;
+  padding: 10px;
+  width: 100%;
+}
+.contact-us-btn:hover {
+  color: #1d537d;
+  background-color: #ffffff;
+  border: 3px solid #ffffff;
+}
