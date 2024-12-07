@@ -15,7 +15,7 @@ from management.utils import get_client_ip, log_activity
 
 
 # Render Employee Dashboard
-@login_required(login_url="/login_employee/")
+@login_required(login_url="login_employee")
 def employee_dashboard(request):
     employee = Employee.objects.get(user=request.user)
     job_group = employee.job_group
@@ -135,6 +135,7 @@ def logout_employee(request):
 
 
 # Employee Create Account
+@login_required(login_url="verify_employee")
 def create_account(request):
     if request.method == "POST":
         id_number = request.session.get("id_number")
@@ -174,7 +175,7 @@ def create_account(request):
 
 
 # Employee Salary Breakdown
-@login_required(login_url="/login_employee/")
+@login_required(login_url="login_employee")
 def salary_breakdown(request):
     # Get the employee associated with the user
     employee = get_object_or_404(Employee, user=request.user)
@@ -236,7 +237,7 @@ def salary_breakdown(request):
 
 
 # Generate PDF of Salary Breakdown
-@login_required(login_url="/login_employee/")
+@login_required(login_url="login_employee")
 def generate_breakdown_pdf(request):
     # Get the employee and associated details
     employee = get_object_or_404(Employee, user=request.user)
@@ -312,7 +313,7 @@ def generate_breakdown_pdf(request):
 
 
 # Employee Account Settings
-@login_required(login_url="/login_employee/")
+@login_required(login_url="login_employee")
 def account_settings(request):
     # Get the employee and associated details
     employee = get_object_or_404(Employee, user=request.user)
