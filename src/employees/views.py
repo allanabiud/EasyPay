@@ -314,6 +314,15 @@ def generate_breakdown_pdf(request):
 # Employee Account Settings
 @login_required(login_url="/login_employee/")
 def account_settings(request):
+    # Get the employee and associated details
+    employee = get_object_or_404(Employee, user=request.user)
+    job_group = employee.job_group
+
+    context = {
+        "employee": employee,
+        "job_group": job_group,
+    }
+
     if request.method == "POST":
         # Get the old password, new password, and password confirmation
         old_password = request.POST.get("old_password")
@@ -367,4 +376,4 @@ def account_settings(request):
         messages.success(request, "Your account information has been updated.")
         return redirect("account_settings")
 
-    return render(request, "account_settings.html")
+    return render(request, "account_settings.html", context)

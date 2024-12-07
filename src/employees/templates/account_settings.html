@@ -1,7 +1,7 @@
 {% extends "layouts/dashboard_layout.html" %}
 {% load static %}
 {% block title %}
-  <title>My Dashboard | EasyPay</title>
+  <title>Account Settings | EasyPay</title>
 {% endblock title %}
 {% block content %}
   <div class="container-fluid">
@@ -104,10 +104,101 @@
             </div>
           </div>
           <div class="card-body">
-            <p>Update your username or password.</p>
-            <form method="POST">
-              {% csrf_token %}
-              <!-- Username Field -->
+            <!-- Tabs for Employee Details and Security Settings -->
+            <ul class="nav nav-tabs"
+                id="settingsTab"
+                role="tablist"
+                style="z-index: 10">
+              <li class="nav-item" role="presentation">
+              <a class="nav-link active"
+                 id="employee-details-tab"
+                 data-bs-toggle="tab"
+                 href="#employee-details"
+                 role="tab"
+                 aria-controls="employee-details"
+                 aria-selected="true"><i class="bi bi-person-lines-fill me-2" style="font-size: 1.5rem"></i>
+              <span class="fw-bold" style="font-size: 1.1rem;">Employee Details</span></a>
+          </li>
+          <li class="nav-item" role="presentation">
+          <a class="nav-link"
+             id="security-settings-tab"
+             data-bs-toggle="tab"
+             href="#security-settings"
+             role="tab"
+             aria-controls="security-settings"
+             aria-selected="false"><i class="bi bi-shield-shaded me-2" style="font-size: 1.5rem"></i>
+          <span class="fw-bold" style="font-size: 1.1rem;">Security Settings</span></a>
+      </li>
+    </ul>
+    <div class="tab-content mt-3"
+         id="settingsTabContent"
+         style="position: relative">
+      <!-- Employee Details Tab -->
+      <div class="tab-pane fade show active"
+           id="employee-details"
+           role="tabpanel"
+           aria-labelledby="employee-details-tab">
+        <div class="d-flex flex-column gap-5">
+          <div class="row g-4">
+            <!-- ID Number -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>ID Number:</strong>
+                <span>{{ employee.id_number }}</span>
+              </div>
+            </div>
+            <!-- Name -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>Name:</strong>
+                <span>{{ employee.first_name }} {{ employee.last_name }}</span>
+              </div>
+            </div>
+            <!-- Email -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>Email:</strong>
+                <span>{{ employee.email }}</span>
+              </div>
+            </div>
+            <!-- Department -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>Department:</strong>
+                <span>{{ employee.department }}</span>
+              </div>
+            </div>
+            <!-- Job Group -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>Job Group:</strong>
+                <span>{{ employee.job_group }}</span>
+              </div>
+            </div>
+            <!-- Branch -->
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                <strong>Branch:</strong>
+                <span>{{ employee.branch }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center mb-2 mt-3">
+          <small>Something Wrong? <a href="{% url 'contact_admin' %}">Contact an Admin</a></small>
+        </div>
+      </div>
+      <!-- Security Settings Tab (Username & Password Update) -->
+      <div class="tab-pane fade"
+           id="security-settings"
+           role="tabpanel"
+           aria-labelledby="security-settings-tab">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="row g-5 align-items-center">
+            <!-- Username Update -->
+            <div class="col-md-6">
+              <p>Update your username</p>
               <div class="form-floating mb-3">
                 <input type="text"
                        class="form-control"
@@ -118,7 +209,10 @@
                        required>
                 <label for="username" class="form-label text-black-50">Username</label>
               </div>
-              <!-- Old Password Field -->
+            </div>
+            <!-- Password Update -->
+            <div class="col-md-6">
+              <p>Update your password</p>
               <div class="form-floating mb-3">
                 <input type="password"
                        class="form-control"
@@ -127,7 +221,6 @@
                        placeholder="Enter your current password">
                 <label for="old_password" class="form-label text-black-50">Old Password</label>
               </div>
-              <!-- New Password Field -->
               <div class="form-floating mb-3">
                 <input type="password"
                        class="form-control"
@@ -136,7 +229,6 @@
                        placeholder="Enter your new password">
                 <label for="new_password" class="form-label text-black-50">New Password</label>
               </div>
-              <!-- Confirm New Password Field -->
               <div class="form-floating mb-3">
                 <input type="password"
                        class="form-control"
@@ -145,11 +237,18 @@
                        placeholder="Confirm your new password">
                 <label for="confirm_password" class="form-label text-black-50">Confirm Password</label>
               </div>
-              <button type="submit" class="btn btn-primary mt-4">Save Changes</button>
-            </form>
+            </div>
           </div>
-        </div>
-      </main>
+          <!-- Unified Submit Button -->
+          <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary">Update Account Settings</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+</div>
+</main>
+</div>
+</div>
 {% endblock content %}

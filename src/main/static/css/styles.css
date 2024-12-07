@@ -9,6 +9,14 @@ body {
   font-family: "Lato", sans-serif;
   background-color: #b5b5b5;
 }
+a {
+  color: #00bcd4; /* Bright Cyan */
+  text-decoration: none; /* Optional, for removing underline */
+}
+
+a:hover {
+  color: #ffeb3b; /* Light Yellow on hover */
+}
 
 /* Navbar */
 .navbar-brand h1 {

@@ -1,6 +1,14 @@
 body {
   background-color: #b5b5b5;
 }
+a {
+  color: #00bcd4; /* Bright Cyan */
+  text-decoration: none; /* Optional, for removing underline */
+}
+
+a:hover {
+  color: #ffeb3b; /* Light Yellow on hover */
+}
 
 /* Sidebar */
 .sidebar {
@@ -65,10 +73,24 @@ body {
 .dropdown-item:hover {
   color: #3626a7;
 }
+.row {
+  display: flex; /* Enable flexbox for the row */
+}
 .card {
+  flex: 1; /* All cards take up equal width and height */
+  display: flex;
+  flex-direction: column; /* Ensures buttons/content stack vertically */
+  justify-content: space-between; /* Evenly distributes content */
+  height: 100%; /* Makes the card fill its column height */
   border-radius: 20px;
   border: none;
   background-color: #dbdbdb;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ensures full height usage */
+  text-align: center; /* Optional for better appearance */
 }
 .card1 {
   background-color: #3626a7;
@@ -90,4 +112,18 @@ body {
 .salary-card {
   background-color: #3626a7;
   color: #ffffff;
+}
+/* Tabs */
+.nav-tabs .nav-link {
+  background-color: transparent;
+  color: #ffffff;
+  border: none; /* Removes border */
+  font-weight: 600; /* Make text bolder */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+#security-settings-tab:hover,
+#employee-details-tab:hover {
+  border-top: 1px solid #ffffff; /* Adds border on hover */
+  border-right: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
 }

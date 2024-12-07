@@ -1,4 +1,7 @@
 {% extends "layouts/form_layout.html" %}
+{% block title %}
+  <title>Employee Login | EasyPay</title>
+{% endblock title %}
 {% load static %}
 {% block content %}
   <div class="form-container">
@@ -39,7 +42,12 @@
         </form>
       </div>
       <div class="card-footer text-center">
-        <small>Don't have an account? <a href="{% url 'verify_employee' %}">Verify your ID Number</a></small>
+        <div class="forgot-password-text mb-2">
+          <small>Forgot your password? <a href="">Reset Password</a></small>
+        </div>
+        <div class="missing-account-text">
+          <small>Don't have an account? <a href="{% url 'verify_employee' %}">Verify your Account</a></small>
+        </div>
       </div>
     </div>
   </div>
