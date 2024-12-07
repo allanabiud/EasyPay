@@ -54,5 +54,21 @@
         }
       });
     });
+
+    // Focus the first input
+    inputs[0].focus();
+
+    // Event listener for paste action
+    inputs[0].addEventListener("paste", (e) => {
+      // Get the pasted text
+      const pastedValue = e.clipboardData.getData("text").slice(0, 6); // Take the first 6 characters
+
+      // Distribute the pasted value to the inputs
+      pastedValue.split("").forEach((char, index) => {
+        if (inputs[index]) {
+          inputs[index].value = char; // Fill each input field
+        }
+      });
+    });
   </script>
 {% endblock content %}

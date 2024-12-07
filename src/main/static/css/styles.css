@@ -30,9 +30,9 @@ a:hover {
 }
 .nav-admin-btn {
   color: #3626a7;
+  background-color: transparent;
   border: 3px solid #3626a7;
   border-radius: 0;
-  background-color: transparent;
   padding: 5;
 }
 .nav-admin-btn:hover {
@@ -41,16 +41,15 @@ a:hover {
 }
 
 .nav-employee-btn {
-  color: #fff;
-  background-color: #1d537d;
+  color: #1d537d;
+  background-color: transparent;
   border: 3px solid #1d537d;
   border-radius: 0;
   padding: 5;
 }
 .nav-employee-btn:hover {
-  color: #1d537d;
-  background-color: transparent;
-  border: 3px solid #1d537d;
+  color: #fff;
+  background-color: #1d537d;
 }
 
 /* Hero Section */

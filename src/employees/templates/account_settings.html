@@ -5,208 +5,197 @@
 {% endblock title %}
 {% block content %}
   <div class="container-fluid">
-    <div class="row gx-0">
-      <!-- Main Content -->
-      <main class="col-10 main-content">
-        <nav class="navbar navbar-expand-lg dash-nav">
-          <div class="container-fluid">
-            <h1 class="navbar-brand fw-bold" style="font-size: 1.5rem">Account Settings</h1>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                  <div class="dropdown">
-                    <button class="btn dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                      <i class="bi bi-person-circle me-1" style="font-size: 1.5rem"></i>
-                      <span class="fw-bold" style="font-size: 1.1rem;">{{ user.username }}</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a class="dropdown-item" href="{% url 'account_settings' %}">
-                          <i class="bi bi-person-gear me-1"></i>
-                          <span>Account Settings</span></a>
-                      </li>
-                      <li>
-                        <hr class="dropdown-divider" />
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="{% url 'logout_employee' %}">
-                          <i class="bi bi-box-arrow-left me-1"></i>
-                          <span>Logout</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-              </ul>
-            </div>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Navbar -->
+      <nav class="navbar navbar-expand-lg dash-nav">
+        <div class="container-fluid">
+          <h1 class="navbar-brand fw-bold" style="font-size: 1.5rem">Account Settings</h1>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                    <i class="bi bi-person-circle me-1" style="font-size: 1.5rem"></i>
+                    <span class="fw-bold" style="font-size: 1.1rem;">{{ user.username }}</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'account_settings' %}">
+                        <i class="bi bi-person-gear me-1"></i>
+                        <span>Account Settings</span></a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'logout_employee' %}">
+                        <i class="bi bi-box-arrow-left me-1"></i>
+                        <span>Logout</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
           </div>
-        </nav>
-        <!-- Cards -->
-        <div class="card card1">
-          <div class="card-header">
-            <div class="d-flex align-items-center">
-              <i class="bi bi-person-fill-gear me-2" style="font-size: 1.5rem"></i>
-              <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Account Settings</h5>
-            </div>
+        </div>
+      </nav>
+      <!-- Cards -->
+      <div class="card card1">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-person-fill-gear me-2" style="font-size: 1.5rem"></i>
+            <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Account Settings</h5>
           </div>
-          <div class="card-body">
-            <!-- Tabs for Employee Details and Security Settings -->
-            <ul class="nav nav-tabs"
-                id="settingsTab"
-                role="tablist"
-                style="z-index: 10">
-              <li class="nav-item" role="presentation">
+        </div>
+        <div class="card-body">
+          <!-- Tabs for Employee Details and Security Settings -->
+          <ul class="nav nav-tabs"
+              id="settingsTab"
+              role="tablist"
+              style="z-index: 10">
+            <li class="nav-item" role="presentation">
               <a class="nav-link active"
                  id="employee-details-tab"
                  data-bs-toggle="tab"
                  href="#employee-details"
                  role="tab"
                  aria-controls="employee-details"
-                 aria-selected="true"><i class="bi bi-person-lines-fill me-2" style="font-size: 1.5rem"></i>
-              <span class="fw-bold" style="font-size: 1.1rem;">Employee Details</span></a>
-          </li>
-          <li class="nav-item" role="presentation">
-          <a class="nav-link"
-             id="security-settings-tab"
-             data-bs-toggle="tab"
-             href="#security-settings"
-             role="tab"
-             aria-controls="security-settings"
-             aria-selected="false"><i class="bi bi-shield-shaded me-2" style="font-size: 1.5rem"></i>
-          <span class="fw-bold" style="font-size: 1.1rem;">Security Settings</span></a>
-      </li>
-    </ul>
-    <div class="tab-content mt-3"
-         id="settingsTabContent"
-         style="position: relative">
-      <!-- Employee Details Tab -->
-      <div class="tab-pane fade show active"
-           id="employee-details"
-           role="tabpanel"
-           aria-labelledby="employee-details-tab">
-        <div class="d-flex flex-column gap-5">
-          <div class="row g-4">
-            <!-- ID Number -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>ID Number:</strong>
-                <span>{{ employee.id_number }}</span>
+                 aria-selected="true"><i class="bi bi-person-lines-fill me-2" style="font-size: 1.5rem;"></i><span class="fw-bold" style="font-size: 1.1rem;">Employee Details</span></a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link"
+                 id="security-settings-tab"
+                 data-bs-toggle="tab"
+                 href="#security-settings"
+                 role="tab"
+                 aria-controls="security-settings"
+                 aria-selected="false"><i class="bi bi-shield-lock-fill me-2" style="font-size: 1.5rem;"></i><span class="fw-bold" style="font-size: 1.1rem;">Security Settings</span></a>
+            </li>
+          </ul>
+          <!-- Tab Content -->
+          <div class="tab-content mt-3"
+               id="settingsTabContent"
+               style="position: relative">
+            <!-- Employee Details Tab -->
+            <div class="tab-pane fade show active"
+                 id="employee-details"
+                 role="tabpanel"
+                 aria-labelledby="employee-details-tab">
+              <div class="d-flex flex-column gap-5">
+                <div class="row g-4">
+                  <!-- ID Number -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>ID Number:</strong>
+                      <span>{{ employee.id_number }}</span>
+                    </div>
+                  </div>
+                  <!-- Name -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>Name:</strong>
+                      <span>{{ employee.first_name }} {{ employee.last_name }}</span>
+                    </div>
+                  </div>
+                  <!-- Email -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>Email:</strong>
+                      <span>{{ employee.email }}</span>
+                    </div>
+                  </div>
+                  <!-- Department -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>Department:</strong>
+                      <span>{{ employee.department }}</span>
+                    </div>
+                  </div>
+                  <!-- Job Group -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>Job Group:</strong>
+                      <span>{{ employee.job_group }}</span>
+                    </div>
+                  </div>
+                  <!-- Branch -->
+                  <div class="col-md-6">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                      <strong>Branch:</strong>
+                      <span>{{ employee.branch }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center mb-2 mt-3">
+                <small>Something Wrong? <a href="{% url 'contact_admin' %}">Contact an Admin</a></small>
               </div>
             </div>
-            <!-- Name -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>Name:</strong>
-                <span>{{ employee.first_name }} {{ employee.last_name }}</span>
-              </div>
-            </div>
-            <!-- Email -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>Email:</strong>
-                <span>{{ employee.email }}</span>
-              </div>
-            </div>
-            <!-- Department -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>Department:</strong>
-                <span>{{ employee.department }}</span>
-              </div>
-            </div>
-            <!-- Job Group -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>Job Group:</strong>
-                <span>{{ employee.job_group }}</span>
-              </div>
-            </div>
-            <!-- Branch -->
-            <div class="col-md-6">
-              <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
-                <strong>Branch:</strong>
-                <span>{{ employee.branch }}</span>
-              </div>
+            <!-- Security Settings Tab (Username & Password Update) -->
+            <div class="tab-pane fade"
+                 id="security-settings"
+                 role="tabpanel"
+                 aria-labelledby="security-settings-tab">
+              <form method="POST">
+                {% csrf_token %}
+                <div class="row g-5 align-items-center">
+                  <!-- Username Update -->
+                  <div class="col-md-6">
+                    <p>Update your username</p>
+                    <div class="form-floating mb-3">
+                      <input type="text"
+                             class="form-control"
+                             id="username"
+                             name="username"
+                             value="{{ user.username }}"
+                             placeholder="Enter your username"
+                             required>
+                      <label for="username" class="form-label text-black-50">Username</label>
+                    </div>
+                  </div>
+                  <!-- Password Update -->
+                  <div class="col-md-6">
+                    <p>Update your password</p>
+                    <div class="form-floating mb-3">
+                      <input type="password"
+                             class="form-control"
+                             name="old_password"
+                             id="old_password"
+                             placeholder="Enter your current password">
+                      <label for="old_password" class="form-label text-black-50">Old Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="password"
+                             class="form-control"
+                             name="new_password"
+                             id="new_password"
+                             placeholder="Enter your new password">
+                      <label for="new_password" class="form-label text-black-50">New Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input type="password"
+                             class="form-control"
+                             id="confirm_password"
+                             name="confirm_password"
+                             placeholder="Confirm your new password">
+                      <label for="confirm_password" class="form-label text-black-50">Confirm Password</label>
+                    </div>
+                  </div>
+                </div>
+                <!-- Unified Submit Button -->
+                <div class="text-center mt-4">
+                  <button type="submit" class="btn btn-primary">Update Account Settings</button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
-        <div class="d-flex justify-content-center mb-2 mt-3">
-          <small>Something Wrong? <a href="{% url 'contact_admin' %}">Contact an Admin</a></small>
-        </div>
       </div>
-      <!-- Security Settings Tab (Username & Password Update) -->
-      <div class="tab-pane fade"
-           id="security-settings"
-           role="tabpanel"
-           aria-labelledby="security-settings-tab">
-        <form method="POST">
-          {% csrf_token %}
-          <div class="row g-5 align-items-center">
-            <!-- Username Update -->
-            <div class="col-md-6">
-              <p>Update your username</p>
-              <div class="form-floating mb-3">
-                <input type="text"
-                       class="form-control"
-                       id="username"
-                       name="username"
-                       value="{{ user.username }}"
-                       placeholder="Enter your username"
-                       required>
-                <label for="username" class="form-label text-black-50">Username</label>
-              </div>
-            </div>
-            <!-- Password Update -->
-            <div class="col-md-6">
-              <p>Update your password</p>
-              <div class="form-floating mb-3">
-                <input type="password"
-                       class="form-control"
-                       name="old_password"
-                       id="old_password"
-                       placeholder="Enter your current password">
-                <label for="old_password" class="form-label text-black-50">Old Password</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password"
-                       class="form-control"
-                       name="new_password"
-                       id="new_password"
-                       placeholder="Enter your new password">
-                <label for="new_password" class="form-label text-black-50">New Password</label>
-              </div>
-              <div class="form-floating mb-3">
-                <input type="password"
-                       class="form-control"
-                       id="confirm_password"
-                       name="confirm_password"
-                       placeholder="Confirm your new password">
-                <label for="confirm_password" class="form-label text-black-50">Confirm Password</label>
-              </div>
-            </div>
-          </div>
-          <!-- Unified Submit Button -->
-          <div class="text-center mt-4">
-            <button type="submit" class="btn btn-primary">Update Account Settings</button>
-          </div>
-        </form>
-      </div>
-    </div>
+    </main>
   </div>
-</div>
-</main>
-</div>
-</div>
 {% endblock content %}

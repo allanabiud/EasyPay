@@ -135,7 +135,6 @@ def logout_employee(request):
 
 
 # Employee Create Account
-@login_required(login_url="verify_employee")
 def create_account(request):
     if request.method == "POST":
         id_number = request.session.get("id_number")
@@ -145,6 +144,13 @@ def create_account(request):
 
         try:
             employee = Employee.objects.get(id_number=id_number)
+
+            # Check if the username is already taken
+            if User.objects.filter(username=username).exists():
+                messages.error(
+                    request, "The username is already taken. Please choose another one."
+                )
+                return render(request, "create_account.html")
 
             if password != password_confirm:
                 messages.error(request, "Passwords do not match.")
@@ -159,6 +165,12 @@ def create_account(request):
             # Link employee to user
             employee.user = user  # Set the employee's user field
             employee.save()
+            # Log successful account creation
+            log_activity(
+                user=user,
+                action="Successful Account Creation",
+                ip_address=get_client_ip(request),
+            )
 
             messages.success(request, "Account created successfully.")
             messages.info(request, "Login into your account.")

@@ -12,10 +12,20 @@ def verify_employee(request):
         id_number = request.POST.get("id_number")
         try:
             employee = Employee.objects.get(id_number=id_number)
+
             # Check if the employee is already verified
             if employee.verified:
-                messages.info(request, "You have already verified. Please log in.")
-                return redirect("login_employee")
+                if employee.user:  # Check if the employee has a user associated
+                    messages.info(request, "You have already verified. Please log in.")
+                    return redirect("login_employee")
+                else:
+                    messages.info(
+                        request, "You have already verified. Please create an account."
+                    )
+                    request.session["id_number"] = (
+                        id_number  # Save ID number in session
+                    )
+                    return redirect("create_account")
             else:
                 # Generate OTP
                 send_otp(employee)  # Using the new send_otp function

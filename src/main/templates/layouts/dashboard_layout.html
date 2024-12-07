@@ -61,8 +61,8 @@
       {% endif %}
     </div>
     <!-- Sidebar -->
-    <nav class="col-2">
-      <div class=" sidebar d-flex flex-column">
+    <nav">
+      <div class="sidebar d-flex flex-column">
         <!-- Sidebar Header -->
         <div class="sidebar-header text-center">
           <a href="{% url 'home' %}">
@@ -74,19 +74,22 @@
         <div class="sidebar-body text-white">
           <ul class="nav flex-column">
             <li class="nav-item py-2">
-              <a class="nav-link active" href="{% url 'employee_dashboard' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'employee_dashboard' %}active{% endif %}"
+                 href="{% url 'employee_dashboard' %}">
                 <i class="bi bi-grid-fill me-2"></i>
                 <span>Dashboard</span>
               </a>
             </li>
             <li class="nav-item py-2">
-              <a class="nav-link" href="{% url 'salary_breakdown' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'salary_breakdown' %}active{% endif %}"
+                 href="{% url 'salary_breakdown' %}">
                 <i class="bi bi-clipboard-data-fill me-2"></i>
                 <span>Salary Breakdown</span>
               </a>
             </li>
             <li class="nav-item py-2">
-              <a class="nav-link" href="{% url 'account_settings' %}">
+              <a class="nav-link {% if request.resolver_match.url_name == 'account_settings' %}active{% endif %}"
+                 href="{% url 'account_settings' %}">
                 <i class="bi bi-person-fill-gear me-2"></i>
                 <span>Account Settings</span>
               </a>
@@ -119,4 +122,4 @@
       });
     </script>
   </body>
-  <html>
+</html>
