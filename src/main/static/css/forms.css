@@ -56,3 +56,31 @@ body {
   background-color: #ffffff;
   border: 3px solid #ffffff;
 }
+.segmented-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Space between inputs */
+}
+
+.segmented-input input {
+  width: 50px; /* Adjust the width of each input box */
+  height: 50px; /* Adjust the height of each input box */
+  font-size: 1.5rem; /* Make the text inside the inputs larger */
+  text-align: center; /* Center the text inside the input */
+  border: 1px solid #ccc; /* Add a light border */
+  border-radius: 8px; /* Round the corners slightly */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.segmented-input input:focus {
+  border-color: #007bff; /* Highlight border on focus */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a glowing effect */
+  outline: none; /* Remove the default outline */
+}
+
+.segmented-input input::placeholder {
+  color: #ddd; /* Add placeholder color if placeholders are used */
+}
