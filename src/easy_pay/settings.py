@@ -101,6 +101,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
     },
     {
         "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
@@ -112,10 +115,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Messages Settings
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 MESSAGE_TAGS = {
+    messages.DEBUG: "debug",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
     messages.ERROR: "danger",
     messages.SUCCESS: "success",
-    messages.INFO: "info",
 }
 
 # Email Configuration
@@ -138,6 +145,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Ensure the cookie is secure and HTTP-only for security
 SESSION_COOKIE_SECURE = True  # Requires HTTPS
 SESSION_COOKIE_HTTPONLY = True
+
+# Set the default domain for the email reset links
+DEFAULT_DOMAIN = "localhost:8000"
 
 
 # Internationalization

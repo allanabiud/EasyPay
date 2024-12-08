@@ -34,6 +34,10 @@ a:hover {
   border-radius: 20px;
 }
 
+.password-reset-card {
+  width: 450px;
+}
+
 /* Form Elements */
 .form-control {
   color: #0d0106;

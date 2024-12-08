@@ -1,10 +1,13 @@
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.http import urlsafe_base64_decode
 
 from management.models import Employee
 
-from .utils import send_otp, verify_otp
+from .utils import send_otp, send_password_reset, verify_otp
 
 
 def verify_employee(request):
@@ -93,3 +96,59 @@ def resend_otp(request, id_number):
 
     # Redirect to verify_code with id_number as a query parameter
     return redirect(f"{reverse('verify_code')}?id_number={id_number}")
+
+
+def request_password_reset(request):
+    if request.method == "POST":
+        email = request.POST.get("email")
+        try:
+            user = User.objects.get(email=email)
+
+            # Call the function to send the password reset email
+            send_password_reset(request, user)
+
+            messages.success(
+                request,
+                "If your email is registered, a password reset link has been sent.",
+            )
+        except User.DoesNotExist:
+            # Do not reveal user existence
+            messages.success(
+                request,
+                "If your email is registered, a password reset link has been sent.",
+            )
+        return redirect("request_password_reset")
+
+    return render(request, "request_password_reset.html")
+
+
+def reset_password_form(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+
+        # Check if token is valid
+        cached_user_id = cache.get(token)
+        if cached_user_id != user.pk:
+            messages.error(request, "Invalid or expired password reset link.")
+            return redirect("request_password_reset")
+    except (User.DoesNotExist, ValueError):
+        messages.error(request, "Invalid password reset link.")
+        return redirect("request_password_reset")
+
+    if request.method == "POST":
+        password = request.POST.get("new_password1")
+        password_confirm = request.POST.get("new_password2")
+
+        if password != password_confirm:
+            messages.error(request, "Passwords do not match.")
+        else:
+            user.set_password(password)
+            user.save()
+            cache.delete(token)  # Invalidate the token
+            messages.success(request, "Password reset successfully.")
+            return redirect("login_employee")
+
+    return render(
+        request, "reset_password_form.html", {"uidb64": uidb64, "token": token}
+    )
