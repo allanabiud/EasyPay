@@ -8,6 +8,8 @@ from .models import (
     Department,
     Employee,
     JobGroup,
+    JobGroupAllowance,
+    JobGroupDeduction,
 )
 
 
@@ -20,82 +22,68 @@ class EmployeeAdmin(admin.ModelAdmin):
 admin.site.register(Employee, EmployeeAdmin)
 
 
-# Job Group Admin
+# Inline admin for JobGroupAllowance
+class JobGroupAllowanceInline(admin.TabularInline):
+    model = JobGroupAllowance
+    extra = 1  # Number of empty rows to show by default
+    autocomplete_fields = ["allowance"]  # Helps with searching allowances
+    fields = ["allowance", "calculation_type", "value"]
+
+
+# Inline admin for JobGroupDeduction
+class JobGroupDeductionInline(admin.TabularInline):
+    model = JobGroupDeduction
+    extra = 1
+    autocomplete_fields = ["deduction"]
+    fields = ["deduction", "calculation_type", "value"]
+
+
+# Admin for JobGroup
+@admin.register(JobGroup)
 class JobGroupAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = [
         "name",
         "base_salary",
-        "total_allowances",
-        "total_deductions",
-        "net_salary",
-    )
-
-    def total_allowances(self, obj):
-        """Calculate and return total allowances for the job group."""
-        return obj.calculate_total_allowances()
-
-    def total_deductions(self, obj):
-        """Calculate and return total deductions for the job group."""
-        return obj.calculate_total_deductions()
-
-    def net_salary(self, obj):
-        """Calculate and return the net salary after allowances and deductions."""
-        return obj.calculate_net_salary()
-
-    total_allowances.admin_order_field = (
-        "base_salary"  # Optional: allows sorting by total allowances
-    )
-    total_deductions.admin_order_field = (
-        "base_salary"  # Optional: allows sorting by total deductions
-    )
-    net_salary.admin_order_field = (
-        "base_salary"  # Optional: allows sorting by net salary
-    )
-
-    total_allowances.short_description = "Total Allowances"
-    total_deductions.short_description = "Total Deductions"
-    net_salary.short_description = "Net Salary"
+        "calculate_total_allowances",
+        "calculate_total_deductions",
+        "calculate_net_salary",
+    ]
+    inlines = [JobGroupAllowanceInline, JobGroupDeductionInline]  # Add inlines
+    search_fields = ["name"]
+    ordering = ["name"]
 
 
-admin.site.register(JobGroup, JobGroupAdmin)
-
-# Department Admin
-admin.site.register(Department)
-
-# Branch Admin
-admin.site.register(Branch)
-
-
-# Allowance Admin
+# Admin for Allowance
+@admin.register(Allowance)
 class AllowanceAdmin(admin.ModelAdmin):
-    list_display = ("name", "display_job_groups", "calculation_type", "value")
-    search_fields = ("name",)
-    list_filter = ("job_groups",)
-
-    def display_job_groups(self, obj):
-        """Display the names of job groups associated with the allowance."""
-        return ", ".join([job_group.name for job_group in obj.job_groups.all()])
-
-    display_job_groups.short_description = "Job Groups"
+    list_display = ["name", "calculation_type", "default_value"]
+    list_filter = ["calculation_type"]
+    search_fields = ["name"]
+    ordering = ["name"]
 
 
-admin.site.register(Allowance, AllowanceAdmin)
-
-
-# Deduction Admin
+# Admin for Deduction
+@admin.register(Deduction)
 class DeductionAdmin(admin.ModelAdmin):
-    list_display = ("name", "display_job_groups", "calculation_type", "value")
-    search_fields = ("name",)
-    list_filter = ("job_groups",)
-
-    def display_job_groups(self, obj):
-        """Display the names of job groups associated with the deduction."""
-        return ", ".join([job_group.name for job_group in obj.job_groups.all()])
-
-    display_job_groups.short_description = "Job Groups"
+    list_display = ["name", "calculation_type", "default_value"]
+    list_filter = ["calculation_type"]
+    search_fields = ["name"]
+    ordering = ["name"]
 
 
-admin.site.register(Deduction, DeductionAdmin)
+# Optional: Register JobGroupAllowance and JobGroupDeduction for management
+@admin.register(JobGroupAllowance)
+class JobGroupAllowanceAdmin(admin.ModelAdmin):
+    list_display = ["job_group", "allowance", "value"]
+    list_filter = ["job_group", "allowance"]
+    search_fields = ["job_group__name", "allowance__name"]
+
+
+@admin.register(JobGroupDeduction)
+class JobGroupDeductionAdmin(admin.ModelAdmin):
+    list_display = ["job_group", "deduction", "value"]
+    list_filter = ["job_group", "deduction"]
+    search_fields = ["job_group__name", "deduction__name"]
 
 
 # Activity Log Admin
@@ -106,3 +94,17 @@ class ActivityLogAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ActivityLog, ActivityLogAdmin)
+
+
+# Admin for Department
+@admin.register(Department)
+class DepartmentAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
+
+
+# Admin for Branch
+@admin.register(Branch)
+class BranchAdmin(admin.ModelAdmin):
+    list_display = ["name", "location"]
+    search_fields = ["name", "location"]

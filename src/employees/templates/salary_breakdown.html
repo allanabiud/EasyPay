@@ -53,36 +53,36 @@
           </div>
         </div>
       </nav>
-      <!-- Cards -->
-      <div class="card salary-card mt-2">
-        <div class="card-header">
+      <!-- Card -->
+      <div class="card salary-card mt-2 shadow-sm border-0">
+        <div class="card-header text-white">
           <div class="d-flex align-items-center mb-2 mt-2">
             <i class="bi bi-clipboard-data-fill me-2" style="font-size: 1.5rem"></i>
             <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Salary Breakdown</h5>
           </div>
         </div>
-        <div class="card-body">
-          <table class="table table-striped table-hover table-bordered table-light">
+        <div class="card-body p-4 bg-light">
+          <table class="table table-hover align-middle mb-0">
             <thead>
               <tr class="table-primary">
                 <th scope="col" class="text-uppercase">Description</th>
-                <th scope="col" class="text-uppercase">Amount</th>
+                <th scope="col" class="text-uppercase text-end">Amount</th>
               </tr>
             </thead>
             <tbody>
               <!-- Base Salary -->
               <tr>
                 <td class="fw-bold">Base Salary</td>
-                <td class="fw-bold">{{ base_salary|floatformat:2|intcomma }}</td>
+                <td class="fw-bold text-end">{{ base_salary|floatformat:2|intcomma }}</td>
               </tr>
               <!-- Allowances Section -->
-              <tr class="table-primary">
+              <tr class="table-secondary">
                 <td colspan="2" class="fw-bold text-uppercase">Allowances</td>
               </tr>
               {% for allowance in allowances %}
                 <tr>
                   <td>{{ allowance.name }}</td>
-                  <td>
+                  <td class="text-end">
                     {% if allowance.calculation_type == "percentage" %}
                       {{ allowance.amount|floatformat:2|intcomma }}
                       ({{ allowance.value|floatformat:2|intcomma }}% of Base Salary)
@@ -95,16 +95,16 @@
               <!-- Total Allowances -->
               <tr class="table-success">
                 <td class="fw-bold">Total Allowances</td>
-                <td class="fw-bold">{{ total_allowances|floatformat:2|intcomma }}</td>
+                <td class="fw-bold text-end">{{ total_allowances|floatformat:2|intcomma }}</td>
               </tr>
               <!-- Deductions Section -->
-              <tr class="table-primary">
+              <tr class="table-secondary">
                 <td colspan="2" class="fw-bold text-uppercase">Deductions</td>
               </tr>
               {% for deduction in deductions %}
                 <tr>
                   <td>{{ deduction.name }}</td>
-                  <td>
+                  <td class="text-end">
                     {% if deduction.calculation_type == "percentage" %}
                       {{ deduction.amount|floatformat:2|intcomma }}
                       ({{ deduction.value|floatformat:2|intcomma }}% of Base Salary)
@@ -115,22 +115,29 @@
                 </tr>
               {% endfor %}
               <!-- Total Deductions -->
-              <tr class="table-success">
+              <tr class="table-danger">
                 <td class="fw-bold">Total Deductions</td>
-                <td class="fw-bold">{{ total_deductions|floatformat:2|intcomma }}</td>
-              </tr>
-              <!-- Net Salary -->
-              <tr class="table-success">
-                <td colspan="1" class="fw-bold" style="font-size: 1.3rem;">Net Salary</td>
-                <td class="fw-bold" style="font-size: 1.3rem;">{{ net_salary|floatformat:2|intcomma }}</td>
+                <td class="fw-bold text-end">{{ total_deductions|floatformat:2|intcomma }}</td>
               </tr>
             </tbody>
+            <tfoot>
+              <!-- Net Salary -->
+              <tr class="table-success">
+                <td class="fw-bold" style="font-size: 1.3rem;">Net Salary</td>
+                <td class="fw-bold text-end" style="font-size: 1.3rem;">{{ net_salary|floatformat:2|intcomma }}</td>
+              </tr>
+            </tfoot>
           </table>
         </div>
-        <div class="card-footer pt-0">
-          <div class="d-flex justify-content-center me-2 mb-2">
-            {# Download PDF Payslip #}
-            <a href="{% url 'generate_salary_pdf' %}" class="btn btn-light mt-3">Download PDF</a>
+        <div class="card-footer bg-white border-top-0">
+          <div class="d-flex justify-content-center">
+            <a href="{% url 'generate_salary_pdf' %}"
+               class="btn mt-3"
+               style="background-color: #3626a7;
+                      color: #ffffff">
+              <i class="bi bi-file-earmark-pdf me-2"></i>
+              <span>Download PDF</span>
+            </a>
           </div>
         </div>
       </div>

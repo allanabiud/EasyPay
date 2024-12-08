@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
 from weasyprint import HTML
 
-from management.models import ActivityLog, Allowance, Deduction, Employee
+from management.models import ActivityLog, Employee
 from management.utils import get_client_ip, log_activity
 
 
@@ -23,9 +23,10 @@ def employee_dashboard(request):
     net_salary = job_group.calculate_net_salary()
     net_salary = round(net_salary, 2)
 
-    # Get allowances and deductions for the job group
-    allowances = Allowance.objects.filter(job_groups=job_group)
-    deductions = Deduction.objects.filter(job_groups=job_group)
+    # Fetch job group-specific allowances and deductions
+    job_group_allowances = job_group.jobgroupallowance_set.all()
+    job_group_deductions = job_group.jobgroupdeduction_set.all()
+
     # Get the user's activity logs
     recent_logs = ActivityLog.objects.filter(user=request.user).order_by("-timestamp")[
         :5
@@ -33,28 +34,34 @@ def employee_dashboard(request):
 
     # Chart Data for Allowances
     allowance_data = {
-        "labels": [allowance.name for allowance in allowances],
+        "labels": [
+            job_group_allowance.allowance.name
+            for job_group_allowance in job_group_allowances
+        ],
         "values": [],
     }
-    for allowance in allowances:
-        if allowance.calculation_type == "percentage":
+    for job_group_allowance in job_group_allowances:
+        if job_group_allowance.calculation_type == "percentage":
             # Calculate allowance amount based on percentage
-            allowance_amount = (allowance.value / 100) * base_salary
+            allowance_amount = (job_group_allowance.value / 100) * base_salary
         else:
-            allowance_amount = allowance.value
+            allowance_amount = job_group_allowance.value
         allowance_data["values"].append(float(allowance_amount))
 
     # Chart Data for Deductions
     deduction_data = {
-        "labels": [deduction.name for deduction in deductions],
+        "labels": [
+            job_group_deduction.deduction.name
+            for job_group_deduction in job_group_deductions
+        ],
         "values": [],
     }
-    for deduction in deductions:
-        if deduction.calculation_type == "percentage":
+    for job_group_deduction in job_group_deductions:
+        if job_group_deduction.calculation_type == "percentage":
             # Calculate deduction amount based on percentage
-            deduction_amount = (deduction.value / 100) * base_salary
+            deduction_amount = (job_group_deduction.value / 100) * base_salary
         else:
-            deduction_amount = deduction.value
+            deduction_amount = job_group_deduction.value
         deduction_data["values"].append(float(deduction_amount))
 
     total_allowance = sum(allowance_data["values"])  # Calculate total allowance
@@ -194,20 +201,21 @@ def salary_breakdown(request):
     # Get the job group associated with the employee
     job_group = employee.job_group
     base_salary = job_group.base_salary
+
     # Calculate total allowances
     total_allowances = Decimal(0)
     allowances = []
-    for allowance in job_group.allowances.all():
-        if allowance.calculation_type == "percentage":
-            allowance_amount = (allowance.value / 100) * base_salary
+    for job_group_allowance in job_group.jobgroupallowance_set.all():
+        if job_group_allowance.calculation_type == "percentage":
+            allowance_amount = (job_group_allowance.value / 100) * base_salary
         else:  # Fixed amount
-            allowance_amount = allowance.value
+            allowance_amount = job_group_allowance.value
         total_allowances += allowance_amount
         allowances.append(
             {
-                "name": allowance.name,
-                "calculation_type": allowance.calculation_type,
-                "value": allowance.value,
+                "name": job_group_allowance.allowance.name,
+                "calculation_type": job_group_allowance.calculation_type,
+                "value": job_group_allowance.value,
                 "amount": allowance_amount,
             }
         )
@@ -215,17 +223,17 @@ def salary_breakdown(request):
     # Calculate total deductions
     total_deductions = Decimal(0)
     deductions = []
-    for deduction in job_group.deductions.all():
-        if deduction.calculation_type == "percentage":
-            deduction_amount = (deduction.value / 100) * base_salary
+    for job_group_deduction in job_group.jobgroupdeduction_set.all():
+        if job_group_deduction.calculation_type == "percentage":
+            deduction_amount = (job_group_deduction.value / 100) * base_salary
         else:  # Fixed amount
-            deduction_amount = deduction.value
+            deduction_amount = job_group_deduction.value
         total_deductions += deduction_amount
         deductions.append(
             {
-                "name": deduction.name,
-                "calculation_type": deduction.calculation_type,
-                "value": deduction.value,
+                "name": job_group_deduction.deduction.name,
+                "calculation_type": job_group_deduction.calculation_type,
+                "value": job_group_deduction.value,
                 "amount": deduction_amount,
             }
         )
@@ -257,43 +265,45 @@ def generate_breakdown_pdf(request):
     base_salary = job_group.base_salary
 
     # Calculate allowances
+    # Calculate total allowances
     total_allowances = Decimal(0)
     allowances = []
-    for allowance in job_group.allowances.all():
-        if allowance.calculation_type == "percentage":
-            allowance_amount = (allowance.value / 100) * base_salary
+    for job_group_allowance in job_group.jobgroupallowance_set.all():
+        if job_group_allowance.calculation_type == "percentage":
+            allowance_amount = (job_group_allowance.value / 100) * base_salary
         else:  # Fixed amount
-            allowance_amount = allowance.value
+            allowance_amount = job_group_allowance.value
         total_allowances += allowance_amount
         allowances.append(
             {
-                "name": allowance.name,
-                "calculation_type": allowance.calculation_type,
-                "value": allowance.value,
+                "name": job_group_allowance.allowance.name,
+                "calculation_type": job_group_allowance.calculation_type,
+                "value": job_group_allowance.value,
                 "amount": allowance_amount,
             }
         )
 
-    # Calculate deductions
+    # Calculate total deductions
     total_deductions = Decimal(0)
     deductions = []
-    for deduction in job_group.deductions.all():
-        if deduction.calculation_type == "percentage":
-            amount = (deduction.value / 100) * base_salary
+    for job_group_deduction in job_group.jobgroupdeduction_set.all():
+        if job_group_deduction.calculation_type == "percentage":
+            deduction_amount = (job_group_deduction.value / 100) * base_salary
         else:  # Fixed amount
-            amount = deduction.value
-        total_deductions += amount
+            deduction_amount = job_group_deduction.value
+        total_deductions += deduction_amount
         deductions.append(
             {
-                "name": deduction.name,
-                "calculation_type": deduction.calculation_type,
-                "value": deduction.value,
-                "amount": amount,
+                "name": job_group_deduction.deduction.name,
+                "calculation_type": job_group_deduction.calculation_type,
+                "value": job_group_deduction.value,
+                "amount": deduction_amount,
             }
         )
 
     # Calculate net salary
     net_salary = job_group.calculate_net_salary()
+    net_salary = round(net_salary, 2)
 
     # Render the PDF template
     context = {

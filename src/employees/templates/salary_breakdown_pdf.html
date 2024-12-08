@@ -6,29 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salary Breakdown</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #007BFF; /* Blue background for headers */
-            background-color: #f2f2f2;
-        }
-        .table-success {
-            background-color: #D4EDDA;
-        }
-        td {
-            background-color: #f9f9f9; /* Light background for table rows */
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        color: #333;
+      }
+      h1 {
+        text-align: center;
+        color: #007BFF;
+      }
+      p {
+        margin: 5px 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+      th {
+        background-color: #007BFF;
+        color: white;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      .section-header {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-align: left;
+      }
+      .table-success {
+        background-color: #D4EDDA;
+        font-weight: bold;
+      }
+      .summary-row td {
+        font-size: 1.1rem;
+        font-weight: bold;
+      }
+      .text-end {
+        text-align: right;
+      }
     </style>
   </head>
   <body>
@@ -44,24 +69,25 @@
     </p>
     <table>
       <thead>
-        <tr class="table-header">
-          <th scope="col" class="text-uppercase">Description</th>
-          <th scope="col" class="text-uppercase">Amount</th>
+        <tr>
+          <th>Description</th>
+          <th class="text-end">Amount</th>
         </tr>
       </thead>
       <tbody>
+        <!-- Base Salary -->
         <tr>
-          <td class="fw-bold">Base Salary</td>
-          <td class="fw-bold">{{ base_salary|floatformat:2|intcomma }}</td>
+          <td>Base Salary</td>
+          <td class="text-end">{{ base_salary|floatformat:2|intcomma }}</td>
         </tr>
-        {# Allowance Section #}
-        <tr>
-          <td colspan="2" class="fw-bold text-uppercase">Allowances</td>
+        <!-- Allowances Section -->
+        <tr class="section-header">
+          <td colspan="2">Allowances</td>
         </tr>
         {% for allowance in allowances %}
           <tr>
             <td>{{ allowance.name }}</td>
-            <td>
+            <td class="text-end">
               {% if allowance.calculation_type == "percentage" %}
                 {{ allowance.amount|floatformat:2|intcomma }}
                 ({{ allowance.value|floatformat:2|intcomma }}% of Base Salary)
@@ -71,14 +97,18 @@
             </td>
           </tr>
         {% endfor %}
-        {# Deduction Section #}
-        <tr>
-          <td colspan="2" class="fw-bold text-uppercase">Deductions</td>
+        <tr class="table-success summary-row">
+          <td>Total Allowances</td>
+          <td class="text-end">{{ total_allowances|floatformat:2|intcomma }}</td>
+        </tr>
+        <!-- Deductions Section -->
+        <tr class="section-header">
+          <td colspan="2">Deductions</td>
         </tr>
         {% for deduction in deductions %}
           <tr>
             <td>{{ deduction.name }}</td>
-            <td>
+            <td class="text-end">
               {% if deduction.calculation_type == "percentage" %}
                 {{ deduction.amount|floatformat:2|intcomma }}
                 ({{ deduction.value|floatformat:2|intcomma }}% of Base Salary)
@@ -88,13 +118,14 @@
             </td>
           </tr>
         {% endfor %}
-        <tr class="table-success">
-          <td colspan="1">
-            <strong>Net Salary</strong>
-          </td>
-          <td>
-            <strong>{{ net_salary|floatformat:2|intcomma }}</strong>
-          </td>
+        <tr class="table-success summary-row">
+          <td>Total Deductions</td>
+          <td class="text-end">{{ total_deductions|floatformat:2|intcomma }}</td>
+        </tr>
+        <!-- Net Salary -->
+        <tr class="table-success summary-row">
+          <td>Net Salary</td>
+          <td class="text-end">{{ net_salary|floatformat:2|intcomma }}</td>
         </tr>
       </tbody>
     </table>

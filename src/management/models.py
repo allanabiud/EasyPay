@@ -2,28 +2,64 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Allowance(models.Model):
+    CALCULATION_TYPES = [
+        ("percentage", "Percentage"),
+        ("fixed", "Fixed Amount"),
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    calculation_type = models.CharField(max_length=15, choices=CALCULATION_TYPES)
+    default_value = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.name} (Default: {self.calculation_type}, {self.default_value})"
+
+
+class Deduction(models.Model):
+    CALCULATION_TYPES = [
+        ("percentage", "Percentage"),
+        ("fixed", "Fixed Amount"),
+    ]
+
+    name = models.CharField(max_length=100, unique=True)
+    calculation_type = models.CharField(max_length=15, choices=CALCULATION_TYPES)
+    default_value = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+
+    def __str__(self):
+        return f"{self.name} (Default: {self.calculation_type}, {self.default_value})"
+
+
 class JobGroup(models.Model):
     name = models.CharField(max_length=100)
     base_salary = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    allowances = models.ManyToManyField(
+        Allowance, through="JobGroupAllowance", related_name="job_groups"
+    )
+    deductions = models.ManyToManyField(
+        Deduction, through="JobGroupDeduction", related_name="job_groups"
+    )
 
     def calculate_total_allowances(self):
         """Calculate the total allowances for this job group."""
         total = 0
-        for allowance in self.allowances.all():
+        for job_group_allowance in self.jobgroupallowance_set.all():
+            allowance = job_group_allowance.allowance
             if allowance.calculation_type == "percentage":
-                total += (allowance.value / 100) * self.base_salary
+                total += (job_group_allowance.value / 100) * self.base_salary
             else:  # Fixed amount
-                total += allowance.value
+                total += job_group_allowance.value
         return total
 
     def calculate_total_deductions(self):
         """Calculate the total deductions for this job group."""
         total = 0
-        for deduction in self.deductions.all():
+        for job_group_deduction in self.jobgroupdeduction_set.all():
+            deduction = job_group_deduction.deduction
             if deduction.calculation_type == "percentage":
-                total += (deduction.value / 100) * self.base_salary
+                total += (job_group_deduction.value / 100) * self.base_salary
             else:  # Fixed amount
-                total += deduction.value
+                total += job_group_deduction.value
         return total
 
     def calculate_net_salary(self):
@@ -33,41 +69,54 @@ class JobGroup(models.Model):
             + self.calculate_total_allowances()
             - self.calculate_total_deductions()
         )
-
         return net_salary
 
     def __str__(self):
         return self.name
 
 
-class Allowance(models.Model):
+class JobGroupAllowance(models.Model):
     CALCULATION_TYPES = [
         ("percentage", "Percentage"),
         ("fixed", "Fixed Amount"),
     ]
 
-    name = models.CharField(max_length=100)
-    job_groups = models.ManyToManyField(JobGroup, related_name="allowances")
-    calculation_type = models.CharField(max_length=15, choices=CALCULATION_TYPES)
+    job_group = models.ForeignKey(JobGroup, on_delete=models.CASCADE)
+    allowance = models.ForeignKey(Allowance, on_delete=models.CASCADE)
     value = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    calculation_type = models.CharField(
+        max_length=15,
+        choices=CALCULATION_TYPES,
+        default="fixed",  # Default to fixed if not specified
+    )
+
+    class Meta:
+        unique_together = ("job_group", "allowance")
 
     def __str__(self):
-        return f"{self.name} ({self.calculation_type}: {self.value})"
+        return f"{self.allowance.name} ({self.calculation_type}: {self.value}) for {self.job_group.name}"
 
 
-class Deduction(models.Model):
+class JobGroupDeduction(models.Model):
     CALCULATION_TYPES = [
         ("percentage", "Percentage"),
         ("fixed", "Fixed Amount"),
     ]
 
-    name = models.CharField(max_length=100)
-    job_groups = models.ManyToManyField(JobGroup, related_name="deductions")
-    calculation_type = models.CharField(max_length=15, choices=CALCULATION_TYPES)
+    job_group = models.ForeignKey(JobGroup, on_delete=models.CASCADE)
+    deduction = models.ForeignKey(Deduction, on_delete=models.CASCADE)
     value = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    calculation_type = models.CharField(
+        max_length=15,
+        choices=CALCULATION_TYPES,
+        default="fixed",  # Default to fixed if not specified
+    )
+
+    class Meta:
+        unique_together = ("job_group", "deduction")
 
     def __str__(self):
-        return f"{self.name} ({self.calculation_type}: {self.value})"
+        return f"{self.deduction.name} ({self.calculation_type}: {self.value}) for {self.job_group.name}"
 
 
 class Department(models.Model):
