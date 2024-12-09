@@ -3,11 +3,7 @@ body {
   background-color: #b5b5b5;
 }
 a {
-  color: #00bcd4; /* Bright Cyan */
-  text-decoration: none; /* Optional, for removing underline */
-}
-a:hover {
-  color: #ffeb3b; /* Light Yellow on hover */
+  text-decoration: none;
 }
 
 /* Scrollbar */
@@ -18,11 +14,11 @@ a:hover {
 }
 .overflow-auto::-webkit-scrollbar-track {
   background: #f1f1f1; /* Track color */
-  border-radius: 30px; /* Optional: rounded track corners */
+  border-radius: 30px; /* Rounded track corners */
 }
 .overflow-auto::-webkit-scrollbar-thumb {
   background: #3626a7; /* Thumb color */
-  border-radius: 30px; /* Optional: rounded thumb corners */
+  border-radius: 30px; /* Rounded thumb corners */
 }
 .overflow-auto::-webkit-scrollbar-thumb:hover {
   background: #241983; /* Thumb color on hover */
@@ -140,6 +136,12 @@ a:hover {
   background-color: #632516;
   color: #ffffff;
 }
+/* Card Buttons */
+.card-footer .btn {
+  background-color: transparent;
+  color: #ffffff;
+  border: none; /* Removes border */
+}
 /* Salary Breakdown Card */
 .salary-card {
   background-color: #3626a7;
@@ -148,14 +150,23 @@ a:hover {
 /* Tabs */
 .nav-tabs .nav-link {
   background-color: transparent;
-  color: #ffffff;
+  color: #0d0106;
   border: none; /* Removes border */
   font-weight: 600; /* Make text bolder */
   transition: all 0.3s ease; /* Smooth transition for hover effects */
 }
-#security-settings-tab:hover,
-#employee-details-tab:hover {
-  border-top: 1px solid #ffffff; /* Adds border on hover */
-  border-right: 1px solid #ffffff;
-  border-left: 1px solid #ffffff;
+.nav-tabs .nav-link.active {
+  background-color: #3626a7;
+  color: #ffffff;
+}
+.nav-tabs .nav-link.active:hover {
+  color: #ffffff;
+}
+.nav-tabs .nav-link:hover {
+  color: #3626a7;
+}
+
+/* Modals */
+.modal-backdrop {
+  z-index: 1039 !important; /* Lower than toast container */
 }

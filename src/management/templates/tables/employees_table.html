@@ -1,0 +1,197 @@
+<div class="tab-pane fade show active table-responsive"
+     id="employees"
+     role="tabpanel"
+     aria-labelledby="employees-tab">
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#addEmployeeModal"
+            style="background-color: #3626a7">
+      <i class="bi bi-plus-circle"></i> Add Employee
+    </button>
+  </div>
+  <table id="employeesTable"
+         class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th class="text-start">ID Number</th>
+        <th class="text-start">Name</th>
+        <th class="text-start">Email</th>
+        <th class="text-start">Job Group</th>
+        <th class="text-start">Department</th>
+        <th class="text-start">Branch</th>
+        <th class="text-start">Verified</th>
+        <th class="text-start">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for employee in employees %}
+        <tr>
+          <!-- Displaying Employee Information -->
+          <td class="text-start">{{ employee.id_number }}</td>
+          <td class="text-start">{{ employee.first_name }} {{ employee.last_name }}</td>
+          <td class="text-start">{{ employee.email }}</td>
+          <td class="text-start">{{ employee.job_group.name }}</td>
+          <td class="text-start">{{ employee.department.name }}</td>
+          <td class="text-start">{{ employee.branch.name }}</td>
+          <td>
+            {% if employee.verified %}
+              <span class="badge bg-success">Yes</span>
+            {% else %}
+              <span class="badge bg-danger">No</span>
+            {% endif %}
+          </td>
+          <td>
+            <!-- Trigger Modal -->
+            <button type="button"
+                    class="btn btn-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editEmployeeModal-{{ employee.id_number }}">Edit</button>
+          </td>
+        </tr>
+        <!-- Modal for Each Employee -->
+        <div class="modal fade"
+             id="editEmployeeModal-{{ employee.id_number }}"
+             tabindex="-1"
+             aria-labelledby="editEmployeeModalLabel-{{ employee.id_number }}"
+             aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'edit_employee' employee.id_number %}">
+                {% csrf_token %}
+                <div class="modal-header text-white" style="background-color: #3626a7">
+                  <h5 class="modal-title"
+                      id="editEmployeeModalLabel-{{ employee.id_number }}">Edit Employee</h5>
+                  <button type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #dbdbdb">
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="id_number-{{ employee.id_number }}" class="form-label">ID Number</label>
+                      <input type="text"
+                             class="form-control"
+                             id="id_number-{{ employee.id_number }}"
+                             name="id_number"
+                             value="{{ employee.id_number }}"
+                             required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="email-{{ employee.id_number }}" class="form-label">Email</label>
+                      <input type="email"
+                             class="form-control"
+                             id="email-{{ employee.id_number }}"
+                             name="email"
+                             value="{{ employee.email }}"
+                             required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-3">
+                      <label for="first_name-{{ employee.id_number }}" class="form-label">First Name</label>
+                      <input type="text"
+                             class="form-control"
+                             id="first_name-{{ employee.id_number }}"
+                             name="first_name"
+                             value="{{ employee.first_name }}"
+                             required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <label for="last_name-{{ employee.id_number }}" class="form-label">Last Name</label>
+                      <input type="text"
+                             class="form-control"
+                             id="last_name-{{ employee.id_number }}"
+                             name="last_name"
+                             value="{{ employee.last_name }}"
+                             required>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4 mb-3">
+                      <label for="job_group-{{ employee.id_number }}" class="form-label">Job Group</label>
+                      <select class="form-select"
+                              id="job_group-{{ employee.id_number }}"
+                              name="job_group"
+                              required>
+                        {% for job_group in job_groups %}
+                          <option value="{{ job_group.id }}"
+                                  {% if employee.job_group.id == job_group.id %}selected{% endif %}>
+                            {{ job_group.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label for="department-{{ employee.id_number }}" class="form-label">Department</label>
+                      <select class="form-select"
+                              id="department-{{ employee.id_number }}"
+                              name="department"
+                              required>
+                        {% for department in departments %}
+                          <option value="{{ department.id }}"
+                                  {% if employee.department.id == department.id %}selected{% endif %}>
+                            {{ department.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label for="branch-{{ employee.id_number }}" class="form-label">Branch</label>
+                      <select class="form-select"
+                              id="branch-{{ employee.id_number }}"
+                              name="branch"
+                              required>
+                        {% for branch in branches %}
+                          <option value="{{ branch.id }}"
+                                  {% if employee.branch.id == branch.id %}selected{% endif %}>
+                            {{ branch.name }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row align-items-center">
+                    <div class="col-md-6 mb-3">
+                      <label for="user-{{ employee.id_number }}" class="form-label">Linked User</label>
+                      <select class="form-select"
+                              id="user-{{ employee.id_number }}"
+                              name="user"
+                              disabled>
+                        <option value="" {% if not employee.user %}selected{% endif %}>None</option>
+                        {% for user in users %}
+                          <option value="{{ user.id }}"
+                                  {% if employee.user and employee.user.id == user.id %}selected{% endif %}>
+                            {{ user.username }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                      <div class="form-check d-flex">
+                        <input class="form-check-input me-2"
+                               type="checkbox"
+                               id="verified"
+                               name="verified"
+                               {% if employee.verified %}checked{% endif %}
+                               disabled>
+                        <label class="form-check-label" for="verified">Verified</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer" style="background-color: #dbdbdb">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit"
+                          class="btn text-white"
+                          style="background-color: #3626a7">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

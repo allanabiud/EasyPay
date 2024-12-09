@@ -1,0 +1,56 @@
+{% load humanize %}
+<div class="tab-pane fade table-responsive"
+     id="job-groups"
+     role="tabpanel"
+     aria-labelledby="job-groups-tab">
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#addJobGroupModal"
+            style="background-color: #3626a7">
+      <i class="bi bi-plus-circle"></i> Add Job Group
+    </button>
+  </div>
+  <table id="jobGroupsTable"
+         class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th>Job Group</th>
+        <th>Base Salary</th>
+        <th>Allowances</th>
+        <th>Deductions</th>
+        <th>Net Salary</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for job_group in job_groups %}
+        <tr>
+          <td>{{ job_group.name }}</td>
+          <td>KES {{ job_group.base_salary|floatformat:2|intcomma }}</td>
+          <td>
+            {% for allowance in job_group.allowances.all %}
+              <span>{{ allowance.name }}</span>
+              {% if not forloop.last %},{% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% for deduction in job_group.deductions.all %}
+              <span>{{ deduction.name }}</span>
+              {% if not forloop.last %},{% endif %}
+            {% endfor %}
+          </td>
+          <td>KES {{ job_group.calculate_net_salary|floatformat:2|intcomma }}</td>
+          <td>
+            <button class="btn btn-sm btn-warning edit-btn" data-id="{{ job_group.id }}">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-danger delete-btn" data-id="{{ job_group.id }}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

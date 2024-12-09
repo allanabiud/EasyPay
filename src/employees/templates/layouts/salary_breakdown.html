@@ -10,7 +10,8 @@
     <main class="main-content">
       <nav class="navbar navbar-expand-lg dash-nav">
         <div class="container-fluid">
-          <h1 class="navbar-brand fw-bold" style="font-size: 1.5rem">Salary Breakdown</h1>
+          <i class="bi bi-clipboard-data-fill me-2" style="font-size: 1.5rem"></i>
+          <h1 class="navbar-brand fw-bold mb-0" style="font-size: 1.5rem">Salary Breakdown</h1>
           <button class="navbar-toggler"
                   type="button"
                   data-bs-toggle="collapse"
@@ -54,14 +55,12 @@
         </div>
       </nav>
       <!-- Card -->
-      <div class="card salary-card mt-2 shadow-sm border-0">
-        <div class="card-header text-white">
-          <div class="d-flex align-items-center mb-2 mt-2">
-            <i class="bi bi-clipboard-data-fill me-2" style="font-size: 1.5rem"></i>
-            <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Salary Breakdown</h5>
-          </div>
-        </div>
-        <div class="card-body p-4 bg-light">
+      <div class="card mt-2 shadow-sm border-0"
+           style="background-color: #3626a7">
+        <div class="card-body p-4"
+             style="background-color: #dbdbdb;
+                    border-top-right-radius: 10px;
+                    border-top-left-radius: 10px">
           <table class="table table-hover align-middle mb-0">
             <thead>
               <tr class="table-primary">
@@ -129,7 +128,7 @@
             </tfoot>
           </table>
         </div>
-        <div class="card-footer bg-white border-top-0">
+        <div class="card-footer border-top-0" style="background-color: #dbdbdb">
           <div class="d-flex justify-content-center">
             <a href="{% url 'generate_salary_pdf' %}"
                class="btn mt-3"

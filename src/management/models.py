@@ -128,7 +128,7 @@ class Department(models.Model):
 
 class Branch(models.Model):
     name = models.CharField(max_length=100)
-    location = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
@@ -139,30 +139,11 @@ class Employee(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    job_group = models.ForeignKey(JobGroup, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    job_group = models.ForeignKey(JobGroup, on_delete=models.SET_NULL, null=True)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
+    branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True)
     verified = models.BooleanField(default=False)
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
-
-    def calculate_total_allowances(self):
-        return sum(
-            allowance.calculated_amount(self.job_group.base_salary)
-            for allowance in self.job_group.allowances.all()
-        )
-
-    def calculate_total_deductions(self):
-        return sum(
-            deduction.calculated_amount(self.job_group.base_salary)
-            for deduction in self.job_group.deductions.all()
-        )
-
-    def net_salary(self):
-        return (
-            self.job_group.base_salary
-            + self.calculate_total_allowances()
-            - self.calculate_total_deductions()
-        )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.id_number})"

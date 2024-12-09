@@ -10,6 +10,7 @@
     <main class="main-content">
       <nav class="navbar navbar-expand-lg dash-nav mb-2">
         <div class="container-fluid">
+          <i class="bi bi-grid-fill me-2" style="font-size: 1.5rem"></i>
           <h1 class="navbar-brand fw-bold mb-0" style="font-size: 1.5rem">Dashboard</h1>
           <button class="navbar-toggler"
                   type="button"
@@ -57,15 +58,18 @@
       <div class="row">
         <div class="col-md-3">
           <div class="card card1">
-            <div class="card-body text-center">
+            <div class="card-body">
               <div class="align-items-center">
-                <i class="bi bi-cash" style="font-size: 1.8rem"></i>
+                <i class="bi bi-cash-coin" style="font-size: 1.8rem"></i>
                 <h5 class="card-title mb-0" style="font-size: 1.3rem;">Salary</h5>
               </div>
               <h3 class="fw-bold" style="font-size: 1.5rem;">KES {{ net_salary|intcomma }}</h3>
-              <a href="{% url 'salary_breakdown' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-clipboard-data me-1"></i>
-                <span>View Breakdown</span>
+            </div>
+            <div class="card-footer p-0">
+              <a href="{% url 'salary_breakdown' %}"
+                 class="d-flex justify-content-between align-items-center btn btn-primary w-100 text-decoration-none py-2 px-3">
+                <span class="text-white">View Breakdown</span>
+                <i class="bi bi-chevron-right text-white"></i>
               </a>
             </div>
           </div>
@@ -74,13 +78,16 @@
           <div class="card card2">
             <div class="card-body">
               <div class="align-items-center">
-                <i class="bi bi-briefcase" style="font-size: 1.8rem"></i>
+                <i class="bi bi-briefcase" style="font-size: 1.8rem;"></i>
                 <h5 class="card-title mb-0" style="font-size: 1.3rem;">Job Group</h5>
               </div>
               <h3 class="fw-bold" style="font-size: 1.5rem;">{{ employee.job_group }}</h3>
-              <a href="{% url 'account_settings' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-eye me-1"></i>
-                <span>View Details</span>
+            </div>
+            <div class="card-footer p-0">
+              <a href="{% url 'account_settings' %}"
+                 class="d-flex justify-content-between align-items-center btn btn-primary w-100 text-decoration-none py-2 px-3">
+                <span class="text-white">View Details</span>
+                <i class="bi bi-chevron-right text-white"></i>
               </a>
             </div>
           </div>
@@ -93,9 +100,12 @@
                 <h5 class="card-title mb-0" style="font-size: 1.3rem;">Department</h5>
               </div>
               <h3 class="fw-bold" style="font-size: 1.5rem;">{{ employee.department }}</h3>
-              <a href="{% url 'account_settings' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-eye me-1"></i>
-                <span>View Details</span>
+            </div>
+            <div class="card-footer p-0">
+              <a href="{% url 'account_settings' %}"
+                 class="d-flex justify-content-between align-items-center btn btn-primary w-100 text-decoration-none py-2 px-3">
+                <span class="text-white">View Details</span>
+                <i class="bi bi-chevron-right text-white"></i>
               </a>
             </div>
           </div>
@@ -108,9 +118,12 @@
                 <h5 class="card-title mb-0" style="font-size: 1.3rem;">Branch</h5>
               </div>
               <h3 class="fw-bold" style="font-size: 1.5rem;">{{ employee.branch }}</h3>
-              <a href="{% url 'account_settings' %}" class="btn btn-primary btn-sm">
-                <i class="bi bi-eye me-1"></i>
-                <span>View Details</span>
+            </div>
+            <div class="card-footer p-0">
+              <a href="{% url 'account_settings' %}"
+                 class="d-flex justify-content-between align-items-center btn btn-primary w-100 text-decoration-none py-2 px-3">
+                <span class="text-white">View Details</span>
+                <i class="bi bi-chevron-right text-white"></i>
               </a>
             </div>
           </div>

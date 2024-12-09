@@ -1,0 +1,148 @@
+{% load humanize %}
+<div class="tab-pane fade"
+     id="allowances"
+     role="tabpanel"
+     aria-labelledby="allowances-tab">
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#addAllowanceModal"
+            style="background-color: #3626a7">
+      <i class="bi bi-plus-circle"></i> Add Allowance
+    </button>
+  </div>
+  <table id="allowancesTable"
+         class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th>Name</th>
+        <th>Calculation Type</th>
+        <th>Default Value</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for allowance in allowances %}
+        <tr>
+          <td class="text-start">{{ allowance.name }}</td>
+          <td class="text-start">{{ allowance.get_calculation_type_display }}</td>
+          <td class="text-start">
+            {% if allowance.calculation_type == "percentage" %}
+              {{ allowance.default_value|floatformat:2 }}% of the Base Salary
+            {% else %}
+              KES {{ allowance.default_value|floatformat:2|intcomma }}
+            {% endif %}
+          </td>
+          <td>
+            <!-- Edit Button -->
+            <button type="button"
+                    class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editAllowanceModal{{ allowance.id }}">
+              <i class="bi bi-pencil">
+              </i>
+            </button>
+            <!-- Delete Button -->
+            <button type="button"
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteAllowanceModal{{ allowance.id }}">
+              <i class="bi bi-trash">
+              </i>
+            </button>
+          </td>
+        </tr>
+        <!-- Edit Allowance Modal (Dynamic ID for each allowance) -->
+        <div class="modal fade"
+             id="editAllowanceModal{{ allowance.id }}"
+             tabindex="-1"
+             aria-labelledby="editAllowanceModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'edit_allowance' allowance.id %}">
+                {% csrf_token %}
+                <div class="modal-header text-white" style="background-color: #3626a7;">
+                  <h5 class="modal-title" id="editAllowanceModalLabel">Edit Allowance</h5>
+                  <button type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #dbdbdb;">
+                  <div class="mb-3">
+                    <label for="allowanceName" class="form-label">Allowance Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="allowanceName"
+                           name="name"
+                           value="{{ allowance.name }}"
+                           required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="allowanceCalculationType" class="form-label">Calculation Type</label>
+                    <select class="form-select"
+                            id="allowanceCalculationType"
+                            name="calculation_type">
+                      <option value="percentage"
+                              {% if allowance.calculation_type == "percentage" %}selected{% endif %}>
+                        Percentage
+                      </option>
+                      <option value="fixed"
+                              {% if allowance.calculation_type == "fixed" %}selected{% endif %}>Fixed Amount</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="allowanceValue" class="form-label">Amount</label>
+                    <input type="number"
+                           class="form-control"
+                           id="allowanceValue"
+                           name="default_value"
+                           value="{{ allowance.default_value }}"
+                           required>
+                  </div>
+                </div>
+                <div class="modal-footer" style="background-color: #dbdbdb;">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit"
+                          class="btn text-white"
+                          style="background-color: #3626a7">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Delete Allowance Modal (Dynamic ID for each allowance) -->
+        <div class="modal fade"
+             id="deleteAllowanceModal{{ allowance.id }}"
+             tabindex="-1"
+             aria-labelledby="deleteAllowanceModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'delete_allowance' allowance.id %}">
+                {% csrf_token %}
+                <div class="modal-header text-white bg-danger">
+                  <h5 class="modal-title" id="deleteAllowanceModalLabel">Delete Allowance</h5>
+                  <button type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Are you sure you want to delete the allowance <strong>{{ allowance.name }}</strong>?
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

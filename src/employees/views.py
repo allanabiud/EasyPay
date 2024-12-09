@@ -80,7 +80,7 @@ def employee_dashboard(request):
         "total_deduction": total_deduction,
         "recent_logs": recent_logs,
     }
-    return render(request, "employee_dashboard.html", context)
+    return render(request, "layouts/employee_dashboard.html", context)
 
 
 # Employee Dashboard Login
@@ -131,7 +131,7 @@ def login_employee(request):
             messages.error(request, "No account found for this username.")
             return redirect("login_employee")
 
-    return render(request, "login_employee.html")
+    return render(request, "layouts/login_employee.html")
 
 
 # Employee Dashboard Logout
@@ -157,11 +157,11 @@ def create_account(request):
                 messages.error(
                     request, "The username is already taken. Please choose another one."
                 )
-                return render(request, "create_account.html")
+                return render(request, "layouts/create_account.html")
 
             if password != password_confirm:
                 messages.error(request, "Passwords do not match.")
-                return render(request, "create_account.html")
+                return render(request, "layouts/create_account.html")
 
             # Create the user and link to employee
             user = User.objects.create_user(username=username, password=password)
@@ -190,7 +190,7 @@ def create_account(request):
             )
             return redirect("verify_employee")
 
-    return render(request, "create_account.html")
+    return render(request, "layouts/create_account.html")
 
 
 # Employee Salary Breakdown
@@ -253,7 +253,7 @@ def salary_breakdown(request):
         "net_salary": net_salary,
     }
 
-    return render(request, "salary_breakdown.html", context)
+    return render(request, "layouts/salary_breakdown.html", context)
 
 
 # Generate PDF of Salary Breakdown
@@ -316,7 +316,7 @@ def generate_breakdown_pdf(request):
         "total_deductions": total_deductions,
         "net_salary": net_salary,
     }
-    html_string = render_to_string("salary_breakdown_pdf.html", context)
+    html_string = render_to_string("layouts/salary_breakdown_pdf.html", context)
 
     # Generate the PDF
     response = HttpResponse(content_type="application/pdf")
@@ -399,4 +399,4 @@ def account_settings(request):
         messages.success(request, "Your account information has been updated.")
         return redirect("account_settings")
 
-    return render(request, "account_settings.html", context)
+    return render(request, "layouts/account_settings.html", context)

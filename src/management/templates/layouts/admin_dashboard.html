@@ -1,0 +1,58 @@
+{% extends "layouts/admin_dashboard.html" %}
+{% load static %}
+{% block title %}
+  <title>Admin Dashboard | EasyPay</title>
+{% endblock title %}
+{% block content %}
+  <div class="container-fluid">
+    <!-- Main Content -->
+    <main class="main-content">
+      <nav class="navbar navbar-expand-lg dash-nav mb-2">
+        <div class="container-fluid">
+          <i class="bi bi-grid-fill me-2" style="font-size: 1.5rem"></i>
+          <h1 class="navbar-brand fw-bold mb-0" style="font-size: 1.5rem">Admin Dashboard</h1>
+          <button class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNav"
+                  aria-controls="navbarNav"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <div class="dropdown">
+                  <button class="btn dropdown-toggle"
+                          type="button"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                    <i class="bi bi-person-circle me-1" style="font-size: 1.5rem"></i>
+                    <span class="fw-bold" style="font-size: 1.1rem;">{{ user.username }}</span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-item" href="{% url 'account_settings' %}">
+                        <i class="bi bi-person-gear me-1"></i>
+                        <span>Account Settings</span></a>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item" href="{% url 'logout_admin' %}">
+                        <i class="bi bi-box-arrow-left me-1"></i>
+                        <span>Logout</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </main>
+  </div>
+{% endblock content %}

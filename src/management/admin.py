@@ -15,8 +15,8 @@ from .models import (
 
 # Employee Admin
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ("id_number", "first_name", "last_name", "email")
-    search_fields = ("id_number", "first_name", "last_name", "email")
+    list_display = ("id_number", "first_name", "last_name", "email", "job_group")
+    search_fields = ("id_number", "first_name", "last_name", "email", "job_group")
 
 
 admin.site.register(Employee, EmployeeAdmin)
@@ -106,5 +106,5 @@ class DepartmentAdmin(admin.ModelAdmin):
 # Admin for Branch
 @admin.register(Branch)
 class BranchAdmin(admin.ModelAdmin):
-    list_display = ["name", "location"]
-    search_fields = ["name", "location"]
+    list_display = ["name", "address"]
+    search_fields = ["name", "address"]

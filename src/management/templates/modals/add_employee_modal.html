@@ -1,0 +1,102 @@
+<div class="modal fade"
+     id="addEmployeeModal"
+     tabindex="-1"
+     aria-labelledby="addEmployeeModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form id="addEmployeeForm" method="POST" action="{% url 'add_employee' %}">
+        {% csrf_token %}
+        <div class="modal-header text-white" style="background-color: #3626a7">
+          <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body" style="background-color: #dbdbdb">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="id_number" class="form-label">ID Number</label>
+              <input type="text"
+                     class="form-control"
+                     id="id_number"
+                     name="id_number"
+                     required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="first_name" class="form-label">First Name</label>
+              <input type="text"
+                     class="form-control"
+                     id="first_name"
+                     name="first_name"
+                     required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input type="text"
+                     class="form-control"
+                     id="last_name"
+                     name="last_name"
+                     required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="job_group" class="form-label">Job Group</label>
+              <select class="form-select" id="job_group" name="job_group" required>
+                <option value="" selected>Select Job Group</option>
+                {% for job_group in job_groups %}<option value="{{ job_group.id }}">{{ job_group.name }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="department" class="form-label">Department</label>
+              <select class="form-select" id="department" name="department" required>
+                <option value="" selected>Select Department</option>
+                {% for department in departments %}<option value="{{ department.id }}">{{ department.name }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="branch" class="form-label">Branch</label>
+              <select class="form-select" id="branch" name="branch" required>
+                <option value="" selected>Select Branch</option>
+                {% for branch in branches %}<option value="{{ branch.id }}">{{ branch.name }}</option>{% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div class="col-md-6 mb-3">
+              <label for="user" class="form-label">Linked User</label>
+              <select class="form-select" id="user" name="user" disabled>
+                <option value="" selected>None</option>
+                {% for user in users %}<option value="{{ user.id }}">{{ user.username }}</option>{% endfor %}
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="form-check">
+                <input class="form-check-input"
+                       type="checkbox"
+                       id="verified"
+                       name="verified"
+                       disabled>
+                <label class="form-check-label" for="verified">Verified</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="background-color: #dbdbdb">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit"
+                  class="btn text-white"
+                  style="background-color: #3626a7">Add Employee</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

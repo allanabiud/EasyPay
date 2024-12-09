@@ -1,0 +1,113 @@
+<div class="tab-pane fade"
+     id="departments"
+     role="tabpanel"
+     aria-labelledby="departments-tab">
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-sm text-white"
+            data-bs-toggle="modal"
+            data-bs-target="#addDepartmentModal"
+            style="background-color: #3626a7">
+      <i class="bi bi-plus-circle"></i> Add Department
+    </button>
+  </div>
+  <table id="departmentsTable"
+         class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th>Department Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for department in departments %}
+        <tr>
+          <td class="text-start">{{ department.name }}</td>
+          <td>
+            <!-- Edit Button -->
+            <button type="button"
+                    class="btn btn-warning btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editDepartmentModal{{ department.id }}">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <!-- Delete Button -->
+            <button type="button"
+                    class="btn btn-danger btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteDepartmentModal{{ department.id }}">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        <!-- Edit Department Modal (Dynamic ID for each department) -->
+        <div class="modal fade"
+             id="editDepartmentModal{{ department.id }}"
+             tabindex="-1"
+             aria-labelledby="editDepartmentModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'edit_department' department.id %}">
+                {% csrf_token %}
+                <div class="modal-header text-white" style="background-color: #3626a7;">
+                  <h5 class="modal-title" id="editDepartmentModalLabel">Edit Department</h5>
+                  <button type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #dbdbdb;">
+                  <div class="mb-3">
+                    <label for="departmentName" class="form-label">Department Name</label>
+                    <input type="text"
+                           class="form-control"
+                           id="departmentName"
+                           name="name"
+                           value="{{ department.name }}"
+                           required>
+                  </div>
+                </div>
+                <div class="modal-footer" style="background-color: #dbdbdb;">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit"
+                          class="btn text-white"
+                          style="background-color: #3626a7">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <!-- Delete Department Modal (Dynamic ID for each department) -->
+        <div class="modal fade"
+             id="deleteDepartmentModal{{ department.id }}"
+             tabindex="-1"
+             aria-labelledby="deleteDepartmentModalLabel"
+             aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'delete_department' department.id %}">
+                {% csrf_token %}
+                <div class="modal-header text-white bg-danger">
+                  <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
+                  <button type="button"
+                          class="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>
+                    Are you sure you want to delete the department <strong>{{ department.name }}</strong>?
+                  </p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
