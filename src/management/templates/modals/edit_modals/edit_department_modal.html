@@ -8,8 +8,8 @@
     <div class="modal-content">
       <form method="POST" action="{% url 'edit_department' department.id %}">
         {% csrf_token %}
-        <div class="modal-header text-white" style="background-color: #3626a7;">
-          <h5 class="modal-title" id="editDepartmentModalLabel">Edit Department</h5>
+        <div class="modal-header text-white bg-warning">
+          <h5 class="modal-title fw-bold" id="editDepartmentModalLabel">Edit Department</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
@@ -17,13 +17,16 @@
         </div>
         <div class="modal-body" style="background-color: #dbdbdb;">
           <div class="mb-3">
-            <label for="departmentName" class="form-label">Department Name</label>
-            <input type="text"
-                   class="form-control"
-                   id="departmentName"
-                   name="name"
-                   value="{{ department.name }}"
-                   required>
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     id="departmentName"
+                     name="name"
+                     value="{{ department.name }}"
+                     placeholder="Department Name"
+                     required>
+              <label for="departmentName" class="form-label">Department Name</label>
+            </div>
           </div>
         </div>
         <div class="modal-footer" style="background-color: #dbdbdb;">

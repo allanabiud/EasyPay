@@ -9,7 +9,7 @@
       <form method="POST" action="{% url 'add_allowance' %}">
         {% csrf_token %}
         <div class="modal-header text-white" style="background-color: #3626a7;">
-          <h5 class="modal-title" id="addAllowanceModalLabel">Add Allowance</h5>
+          <h5 class="modal-title fw-bold" id="addAllowanceModalLabel">Add Allowance</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
@@ -17,12 +17,15 @@
         </div>
         <div class="modal-body" style="background-color: #dbdbdb;">
           <div class="mb-3">
-            <label for="allowanceName" class="form-label">Allowance Name</label>
-            <input type="text"
-                   class="form-control"
-                   id="allowanceName"
-                   name="name"
-                   required>
+            <div class="form-floating">
+              <input type="text"
+                     class="form-control"
+                     id="allowanceName"
+                     name="name"
+                     placeholder="Allowance Name"
+                     required>
+              <label for="allowanceName">Allowance Name</label>
+            </div>
           </div>
         </div>
         <div class="modal-footer" style="background-color: #dbdbdb;">

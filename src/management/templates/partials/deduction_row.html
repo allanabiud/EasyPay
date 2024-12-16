@@ -1,22 +1,35 @@
 <div class="row mb-2 deduction-row">
-  <div class="col-md-5">
-    <select class="form-select" name="deductions[]" required>
-      <option value="" selected>Select Deduction</option>
-      {% for deduction in deductions %}<option value="{{ deduction.id }}">{{ deduction.name }}</option>{% endfor %}
-    </select>
+  <div class="col-md-4">
+    <div class="form-floating">
+      <select class="form-select" id="deductions" name="deductions[]" required>
+        <option value="" selected>Select Deduction</option>
+        {% for deduction in deductions %}<option value="{{ deduction.id }}">{{ deduction.name }}</option>{% endfor %}
+      </select>
+      <label for="deductions">Deduction</label>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="form-floating">
+      <select class="form-select"
+              id="deduction_calculation_types"
+              name="deduction_calculation_types[]"
+              required>
+        <option value="fixed" selected>Fixed Amount</option>
+        <option value="percentage">Percentage</option>
+      </select>
+      <label for="deduction_calculation_types">Calculation Type</label>
+    </div>
   </div>
   <div class="col-md-3">
-    <select class="form-select" name="deduction_calculation_types[]" required>
-      <option value="fixed" selected>Fixed Amount</option>
-      <option value="percentage">Percentage</option>
-    </select>
-  </div>
-  <div class="col-md-3">
-    <input type="number"
-           class="form-control"
-           name="deduction_values[]"
-           step="0.01"
-           required>
+    <div class="form-floating">
+      <input type="number"
+             class="form-control"
+             name="deduction_values[]"
+             step="0.01"
+             placeholder="Deduction Value"
+             required>
+      <label for="deduction_values">Deduction Value</label>
+    </div>
   </div>
   <div class="col-md-1">
     <button type="button"

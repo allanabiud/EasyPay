@@ -507,14 +507,6 @@ def edit_job_group(request, job_group_id):
         job_group.base_salary = base_salary
         job_group.save()
 
-        # Debug
-        print(request.POST.getlist("allowances[]"))
-        print(request.POST.getlist("allowance_calculation_types[]"))
-        print(request.POST.getlist("allowance_values[]"))
-        print(request.POST.getlist("deductions[]"))
-        print(request.POST.getlist("deduction_calculation_types[]"))
-        print(request.POST.getlist("deduction_values[]"))
-
         # Parse the allowances and deductions from the request
         allowances = request.POST.getlist("allowances[]")
         deductions = request.POST.getlist("deductions[]")

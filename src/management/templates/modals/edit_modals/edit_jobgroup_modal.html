@@ -9,8 +9,8 @@
         <form method="POST"
               action="{% url 'edit_job_group' job_group_entry.job_group_id %}">
           {% csrf_token %}
-          <div class="modal-header text-white" style="background-color: #3626a7">
-            <h5 class="modal-title"
+          <div class="modal-header text-white bg-warning">
+            <h5 class="modal-title fw-bold"
                 id="editJobGroupModalLabel-{{ job_group_entry.job_group_id }}">Edit Job Group</h5>
             <button type="button"
                     class="btn-close"
@@ -20,59 +20,83 @@
           <div class="modal-body" style="background-color: #dbdbdb">
             <div class="row">
               <div class="col-md-6 mb-3 text-start">
-                <label for="name-{{ job_group_entry.job_group_id }}" class="form-label">Job Group Name</label>
-                <input type="text"
-                       class="form-control"
-                       id="name-{{ job_group_entry.job_group_id }}"
-                       name="name"
-                       value="{{ job_group_entry.job_group.name }}"
-                       required>
+                <div class="form-floating">
+                  <input type="text"
+                         class="form-control"
+                         id="name-{{ job_group_entry.job_group_id }}"
+                         name="name"
+                         value="{{ job_group_entry.job_group.name }}"
+                         placeholder="Job Group Name"
+                         required>
+                  <label for="name-{{ job_group_entry.job_group_id }}">Job Group Name</label>
+                </div>
               </div>
               <div class="col-md-6 mb-3 text-start">
-                <label for="base_salary-{{ job_group_entry.job_group_id }}"
-                       class="form-label">Base Salary</label>
-                <input type="number"
-                       class="form-control"
-                       id="base_salary-{{ job_group_entry.job_group_id }}"
-                       name="base_salary"
-                       value="{{ job_group_entry.job_group.base_salary }}"
-                       required>
+                <div class="form-floating">
+                  <input type="number"
+                         class="form-control"
+                         id="base_salary-{{ job_group_entry.job_group_id }}"
+                         name="base_salary"
+                         value="{{ job_group_entry.job_group.base_salary }}"
+                         step="0.01"
+                         placeholder="Base Salary"
+                         required>
+                  <label for="base_salary-{{ job_group_entry.job_group_id }}">Base Salary</label>
+                </div>
               </div>
             </div>
-            <!-- Allowances and Deductions can be added here similarly, if editable -->
             <!-- Allowances Section -->
             <div class="mb-3">
-              <h5 class="text-start">Allowances</h5>
+              <h5 class="border-bottom border-secondary fw-bold text-start">Allowances</h5>
               <div id="allowances-container-{{ job_group_entry.job_group_id }}">
                 {% for allowance in job_group_entry.job_group_allowances %}
                   <div class="row mb-2 allowance-row" id="allowance-row-{{ allowance.id }}">
-                    <div class="col-md-5">
-                      <select class="form-select" name="allowances[]" required>
-                        {% for allowance_option in allowances %}
-                          <option value="{{ allowance_option.id }}"
-                                  {% if allowance_option.id == allowance.allowance.id %}selected{% endif %}>
-                            {{ allowance_option.name }}
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <select class="form-select"
+                                name="allowances[]"
+                                id="allowance-select"
+                                required>
+                          {% for allowance_option in allowances %}
+                            <option value="{{ allowance_option.id }}"
+                                    {% if allowance_option.id == allowance.allowance.id %}selected{% endif %}>
+                              {{ allowance_option.name }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <label for="allowance-select">Allowance</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <select class="form-select"
+                                name="allowance_calculation_types[]"
+                                id="allowance_calculation_types"
+                                required>
+                          <option value="fixed"
+                                  {% if allowance.calculation_type == 'fixed' %}selected{% endif %}>
+                            Fixed Amount
                           </option>
-                        {% endfor %}
-                      </select>
+                          <option value="percentage"
+                                  {% if allowance.calculation_type == 'percentage' %}selected{% endif %}>
+                            Percentage
+                          </option>
+                        </select>
+                        <label for="allowance_calculation_types">Calculation Type</label>
+                      </div>
                     </div>
                     <div class="col-md-3">
-                      <select class="form-select" name="allowance_calculation_types[]" required>
-                        <option value="fixed"
-                                {% if allowance.calculation_type == 'fixed' %}selected{% endif %}>Fixed Amount</option>
-                        <option value="percentage"
-                                {% if allowance.calculation_type == 'percentage' %}selected{% endif %}>
-                          Percentage
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-md-3">
-                      <input type="number"
-                             class="form-control"
-                             name="allowance_values[]"
-                             value="{{ allowance.value }}"
-                             step="0.01"
-                             required>
+                      <div class="form-floating">
+                        <input type="number"
+                               class="form-control"
+                               name="allowance_values[]"
+                               value="{{ allowance.value }}"
+                               id="allowance_value"
+                               placeholder="Allowance Value"
+                               step="0.01"
+                               required>
+                        <label for="allowance_value">Allowance Value</label>
+                      </div>
                     </div>
                     <div class="col-md-1">
                       <button type="button"
@@ -100,37 +124,53 @@
             </div>
             <!-- Deductions Section -->
             <div class="mb-3 justify-content-end">
-              <h5 class="text-start">Deductions</h5>
+              <h5 class="border-bottom border-secondary fw-bold text-start">Deductions</h5>
               <div id="deductions-container-{{ job_group_entry.job_group_id }}">
                 {% for deduction in job_group_entry.job_group_deductions %}
                   <div class="row mb-2 deduction-row" id="deduction-row-{{ deduction.id }}">
-                    <div class="col-md-5">
-                      <select class="form-select" name="deductions[]" required>
-                        {% for deduction_option in deductions %}
-                          <option value="{{ deduction_option.id }}"
-                                  {% if deduction_option.id == deduction.deduction.id %}selected{% endif %}>
-                            {{ deduction_option.name }}
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <select class="form-select" name="deductions[]" id="deductions" required>
+                          {% for deduction_option in deductions %}
+                            <option value="{{ deduction_option.id }}"
+                                    {% if deduction_option.id == deduction.deduction.id %}selected{% endif %}>
+                              {{ deduction_option.name }}
+                            </option>
+                          {% endfor %}
+                        </select>
+                        <label for="deductions">Deduction</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating">
+                        <select class="form-select"
+                                name="deduction_calculation_types[]"
+                                id="deduction_calculation_types"
+                                required>
+                          <option value="fixed"
+                                  {% if deduction.calculation_type == 'fixed' %}selected{% endif %}>
+                            Fixed Amount
                           </option>
-                        {% endfor %}
-                      </select>
+                          <option value="percentage"
+                                  {% if deduction.calculation_type == 'percentage' %}selected{% endif %}>
+                            Percentage
+                          </option>
+                        </select>
+                        <label for="deduction_calculation_types">Calculation Type</label>
+                      </div>
                     </div>
                     <div class="col-md-3">
-                      <select class="form-select" name="deduction_calculation_types[]" required>
-                        <option value="fixed"
-                                {% if deduction.calculation_type == 'fixed' %}selected{% endif %}>Fixed Amount</option>
-                        <option value="percentage"
-                                {% if deduction.calculation_type == 'percentage' %}selected{% endif %}>
-                          Percentage
-                        </option>
-                      </select>
-                    </div>
-                    <div class="col-md-3">
-                      <input type="number"
-                             class="form-control"
-                             name="deduction_values[]"
-                             value="{{ deduction.value }}"
-                             step="0.01"
-                             required>
+                      <div class="form-floating">
+                        <input type="number"
+                               class="form-control"
+                               name="deduction_values[]"
+                               value="{{ deduction.value }}"
+                               id="deduction_value"
+                               placeholder="Deduction Value"
+                               step="0.01"
+                               required>
+                        <label for="deduction_value">Deduction Value</label>
+                      </div>
                     </div>
                     <div class="col-md-1">
                       <button type="button"

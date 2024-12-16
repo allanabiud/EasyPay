@@ -17,8 +17,7 @@
       <i class="bi bi-trash"></i> Delete All Job Groups
     </button>
   </div>
-  <table id="jobGroupsTable"
-         class="table table-bordered table-striped table-hover">
+  <table id="jobGroupsTable" class="table table-bordered table-striped">
     <thead class="table-primary">
       <tr>
         <th>Job Group</th>
@@ -34,42 +33,48 @@
           <td>{{ job_group_data.job_group.name }}</td>
           <td>KES {{ job_group_data.job_group.base_salary|floatformat:2|intcomma }}</td>
           <td>
-            <table class="table table-sm mb-0">
-              <tbody>
-                {% for allowance in job_group_data.job_group_allowances %}
-                  <tr>
-                    <td>
-                      <span>{{ allowance.allowance.name }} (
-                        {% if allowance.calculation_type == 'percentage' %}
-                          {{ allowance.value }}% of Base Salary
-                        {% else %}
-                          KES {{ allowance.value|floatformat:2|intcomma }}
-                        {% endif %}
-                      )</span>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            {% for allowance in job_group_data.job_group_allowances %}
+              <div class="d-flex flex-column">
+                <span>
+                  {{ allowance.allowance.name }}
+                  (
+                  {% if allowance.calculation_type == 'percentage' %}
+                    {{ allowance.value }}% of Base Salary
+                  {% else %}
+                    KES {{ allowance.value|floatformat:2|intcomma }}
+                  {% endif %}
+                  )
+                </span>
+                {% if not forloop.last %}
+                  <hr class="my-2">
+                  <!-- Divider between items -->
+                {% endif %}
+              </div>
+            {% empty %}
+              <span class="fw-bold">No allowances assigned</span>
+            {% endfor %}
           </td>
           <td>
-            <table class="table table-sm mb-0">
-              <tbody>
-                {% for deduction in job_group_data.job_group_deductions %}
-                  <tr>
-                    <td>
-                      <span>{{ deduction.deduction.name }} (
-                        {% if deduction.calculation_type == 'percentage' %}
-                          {{ deduction.value }}% of Base Salary
-                        {% else %}
-                          KES {{ deduction.value|floatformat:2|intcomma }}
-                        {% endif %}
-                      )</span>
-                    </td>
-                  </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+            {% for deduction in job_group_data.job_group_deductions %}
+              <div class="d-flex flex-column">
+                <span>
+                  {{ deduction.deduction.name }}
+                  (
+                  {% if deduction.calculation_type == 'percentage' %}
+                    {{ deduction.value }}% of Base Salary
+                  {% else %}
+                    KES {{ deduction.value|floatformat:2|intcomma }}
+                  {% endif %}
+                  )
+                </span>
+                {% if not forloop.last %}
+                  <hr class="my-2">
+                  <!-- Divider between items -->
+                {% endif %}
+              </div>
+            {% empty %}
+              <span class="fw-bold">No deductions assigned</span>
+            {% endfor %}
           </td>
           <td>
             <!-- Edit Button -->

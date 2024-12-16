@@ -8,7 +8,7 @@
       <form id="addJobGroupForm" method="POST" action="{% url 'add_job_group' %}">
         {% csrf_token %}
         <div class="modal-header text-white" style="background-color: #3626a7">
-          <h5 class="modal-title" id="addJobGroupModalLabel">Add New Job Group</h5>
+          <h5 class="modal-title fw-bold" id="addJobGroupModalLabel">Add New Job Group</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
@@ -18,22 +18,32 @@
           <!-- Job Group Fields -->
           <div class="row">
             <div class="col-md-6 mb-3">
-              <label for="name" class="form-label">Job Group Name</label>
-              <input type="text" class="form-control" id="name" name="name" required>
+              <div class="form-floating">
+                <input type="text"
+                       class="form-control"
+                       id="name"
+                       name="name"
+                       placeholder="Job Group Name"
+                       required>
+                <label for="name">Job Group Name</label>
+              </div>
             </div>
             <div class="col-md-6 mb-3">
-              <label for="base_salary" class="form-label">Base Salary</label>
-              <input type="number"
-                     class="form-control"
-                     id="base_salary"
-                     name="base_salary"
-                     step="0.01"
-                     required>
+              <div class="form-floating">
+                <input type="number"
+                       class="form-control"
+                       id="base_salary"
+                       name="base_salary"
+                       step="0.01"
+                       placeholder="Base Salary"
+                       required>
+                <label for="base_salary">Base Salary</label>
+              </div>
             </div>
           </div>
           <!-- Allowances Section -->
           <div class="mb-3">
-            <h5>Allowances</h5>
+            <h5 class="border-bottom border-secondary fw-bold">Allowances</h5>
             <div id="allowances-section"></div>
             <button type="button"
                     class="btn btn-primary"
@@ -43,7 +53,7 @@
           </div>
           <!-- Deductions Section -->
           <div class="mb-3">
-            <h5>Deductions</h5>
+            <h5 class="border-bottom border-secondary fw-bold">Deductions</h5>
             <div id="deductions-section"></div>
             <button type="button"
                     class="btn btn-primary"
