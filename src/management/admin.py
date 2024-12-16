@@ -56,8 +56,6 @@ class JobGroupAdmin(admin.ModelAdmin):
 # Admin for Allowance
 @admin.register(Allowance)
 class AllowanceAdmin(admin.ModelAdmin):
-    list_display = ["name", "calculation_type", "default_value"]
-    list_filter = ["calculation_type"]
     search_fields = ["name"]
     ordering = ["name"]
 
@@ -65,25 +63,23 @@ class AllowanceAdmin(admin.ModelAdmin):
 # Admin for Deduction
 @admin.register(Deduction)
 class DeductionAdmin(admin.ModelAdmin):
-    list_display = ["name", "calculation_type", "default_value"]
-    list_filter = ["calculation_type"]
     search_fields = ["name"]
     ordering = ["name"]
 
 
 # Optional: Register JobGroupAllowance and JobGroupDeduction for management
-@admin.register(JobGroupAllowance)
-class JobGroupAllowanceAdmin(admin.ModelAdmin):
-    list_display = ["job_group", "allowance", "value"]
-    list_filter = ["job_group", "allowance"]
-    search_fields = ["job_group__name", "allowance__name"]
+# @admin.register(JobGroupAllowance)
+# class JobGroupAllowanceAdmin(admin.ModelAdmin):
+#     list_display = ["job_group", "allowance", "value"]
+#     list_filter = ["job_group", "allowance"]
+#     search_fields = ["job_group__name", "allowance__name"]
 
 
-@admin.register(JobGroupDeduction)
-class JobGroupDeductionAdmin(admin.ModelAdmin):
-    list_display = ["job_group", "deduction", "value"]
-    list_filter = ["job_group", "deduction"]
-    search_fields = ["job_group__name", "deduction__name"]
+# @admin.register(JobGroupDeduction)
+# class JobGroupDeductionAdmin(admin.ModelAdmin):
+#     list_display = ["job_group", "deduction", "value"]
+#     list_filter = ["job_group", "deduction"]
+#     search_fields = ["job_group__name", "deduction__name"]
 
 
 # Activity Log Admin

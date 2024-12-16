@@ -1,0 +1,30 @@
+<div class="row mb-2 deduction-row">
+  <div class="col-md-5">
+    <select class="form-select" name="deductions[]" required>
+      <option value="" selected>Select Deduction</option>
+      {% for deduction in deductions %}<option value="{{ deduction.id }}">{{ deduction.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="deduction_calculation_types[]" required>
+      <option value="fixed" selected>Fixed Amount</option>
+      <option value="percentage">Percentage</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <input type="number"
+           class="form-control"
+           name="deduction_values[]"
+           step="0.01"
+           required>
+  </div>
+  <div class="col-md-1">
+    <button type="button"
+            class="btn btn-danger"
+            hx-post="{% url 'delete_deduction_row' %}"
+            hx-target="closest .deduction-row"
+            hx-swap="outerHTML">
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+</div>

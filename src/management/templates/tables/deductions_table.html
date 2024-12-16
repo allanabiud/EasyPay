@@ -16,8 +16,6 @@
     <thead class="table-primary">
       <tr>
         <th>Name</th>
-        <th>Calculation Type</th>
-        <th>Default Value</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -25,14 +23,6 @@
       {% for deduction in deductions %}
         <tr>
           <td class="text-start">{{ deduction.name }}</td>
-          <td class="text-start">{{ deduction.get_calculation_type_display }}</td>
-          <td class="text-start">
-            {% if deduction.calculation_type == "percentage" %}
-              {{ deduction.default_value|floatformat:2 }}% of the Base Salary
-            {% else %}
-              KES {{ deduction.default_value|floatformat:2|intcomma }}
-            {% endif %}
-          </td>
           <td>
             <!-- Edit Button -->
             <button type="button"
@@ -50,96 +40,10 @@
             </button>
           </td>
         </tr>
-        <!-- Edit Deduction Modal (Dynamic ID for each deduction) -->
-        <div class="modal fade"
-             id="editDeductionModal{{ deduction.id }}"
-             tabindex="-1"
-             aria-labelledby="editDeductionModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form method="POST" action="{% url 'edit_deduction' deduction.id %}">
-                {% csrf_token %}
-                <div class="modal-header text-white" style="background-color: #3626a7;">
-                  <h5 class="modal-title" id="editDeductionModalLabel">Edit Deduction</h5>
-                  <button type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="background-color: #dbdbdb;">
-                  <div class="mb-3">
-                    <label for="deductionName" class="form-label">Deduction Name</label>
-                    <input type="text"
-                           class="form-control"
-                           id="deductionName"
-                           name="name"
-                           value="{{ deduction.name }}"
-                           required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="deductionCalculationType" class="form-label">Calculation Type</label>
-                    <select class="form-select"
-                            id="deductionCalculationType"
-                            name="calculation_type">
-                      <option value="percentage"
-                              {% if deduction.calculation_type == "percentage" %}selected{% endif %}>
-                        Percentage
-                      </option>
-                      <option value="fixed"
-                              {% if deduction.calculation_type == "fixed" %}selected{% endif %}>Fixed Amount</option>
-                    </select>
-                  </div>
-                  <div class="mb-3">
-                    <label for="deductionValue" class="form-label">Amount</label>
-                    <input type="number"
-                           class="form-control"
-                           id="deductionValue"
-                           name="default_value"
-                           value="{{ deduction.default_value }}"
-                           required>
-                  </div>
-                </div>
-                <div class="modal-footer" style="background-color: #dbdbdb;">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit"
-                          class="btn text-white"
-                          style="background-color: #3626a7">Save</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- Delete Deduction Modal (Dynamic ID for each deduction) -->
-        <div class="modal fade"
-             id="deleteDeductionModal{{ deduction.id }}"
-             tabindex="-1"
-             aria-labelledby="deleteDeductionModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form method="POST" action="{% url 'delete_deduction' deduction.id %}">
-                {% csrf_token %}
-                <div class="modal-header text-white bg-danger">
-                  <h5 class="modal-title" id="deleteDeductionModalLabel">Delete Deduction</h5>
-                  <button type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>
-                    Are you sure you want to delete the deduction <strong>{{ deduction.name }}</strong>?
-                  </p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <!-- Edit Deduction Modal -->
+        {% include "modals/edit_modals/edit_deduction_modal.html" %}
+        <!-- Delete Deduction Modal -->
+        {% include "modals/delete_modals/delete_deduction_modal.html" %}
       {% endfor %}
     </tbody>
   </table>

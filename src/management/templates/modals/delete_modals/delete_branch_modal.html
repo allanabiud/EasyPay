@@ -1,0 +1,30 @@
+<!-- Delete Branch Modal (Dynamic ID for each branch) -->
+<div class="modal fade"
+     id="deleteBranchModal{{ branch.id }}"
+     tabindex="-1"
+     aria-labelledby="deleteBranchModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'delete_branch' branch.id %}">
+        {% csrf_token %}
+        <div class="modal-header text-white bg-danger">
+          <h5 class="modal-title" id="deleteBranchModalLabel">Delete Branch</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete the branch <strong>{{ branch.name }}</strong> located at <strong>{{ branch.address }}</strong>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

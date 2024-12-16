@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import (
@@ -84,43 +85,40 @@ def logout_admin(request):
     return redirect("login_admin")
 
 
+# Admin Contact Page
 def contact_admin(request):
     return render(request, "layouts/contact_admin.html")
 
 
+# Admin Tables Page
 def admin_tables(request):
-    # Fetch employees and other dropdown data
+    # Fetch data for tables and forms
+    # Employees
     employees = Employee.objects.select_related(
         "job_group", "department", "branch"
     ).all()
+    # Job Groups
     job_groups = JobGroup.objects.all()
+    # Departments
     departments = Department.objects.all()
+    # Branches
     branches = Branch.objects.all()
+    # Users
     users = User.objects.all()
+    # Allowances
     allowances = Allowance.objects.all()
+    # Deductions
     deductions = Deduction.objects.all()
-
-    # Handle filtering by job group, department, or branch if provided
-    job_group_filter = request.GET.get("job_group", None)
-    department_filter = request.GET.get("department", None)
-    branch_filter = request.GET.get("branch", None)
-
-    # Apply filters if they exist
-    if job_group_filter:
-        job_groups = job_groups.filter(id=job_group_filter)
-    if department_filter:
-        job_groups = job_groups.filter(department__id=department_filter)
-    if branch_filter:
-        job_groups = job_groups.filter(branch__id=branch_filter)
-
-    # Pre-fetch job group allowances and deductions
+    # Job group allowances and deductions
     job_group_data = []
     for job_group in job_groups:
         # Fetch allowances and deductions associated with each job group
+        job_group_id = job_group.id
         job_group_allowances = JobGroupAllowance.objects.filter(job_group=job_group)
         job_group_deductions = JobGroupDeduction.objects.filter(job_group=job_group)
         job_group_data.append(
             {
+                "job_group_id": job_group_id,
                 "job_group": job_group,
                 "job_group_allowances": job_group_allowances,
                 "job_group_deductions": job_group_deductions,
@@ -136,14 +134,13 @@ def admin_tables(request):
         "users": users,
         "allowances": allowances,
         "deductions": deductions,
-        "job_group_filter": job_group_filter,
-        "department_filter": department_filter,
-        "branch_filter": branch_filter,
     }
 
     return render(request, "layouts/admin_tables.html", context)
 
 
+# EMPLOYEES TABLE
+# Add Employee
 def add_employee(request):
     if request.method == "POST":
         id_number = request.POST["id_number"]
@@ -182,6 +179,7 @@ def add_employee(request):
     return redirect("admin_tables")
 
 
+# Edit Employee
 def edit_employee(request, id_number):
     # Retrieve the employee
     employee = get_object_or_404(Employee, id_number=id_number)
@@ -243,18 +241,24 @@ def delete_employee(request, id_number):
     return redirect("admin_tables")
 
 
+# Delete All Employees
+def delete_all_employees(request):
+    if request.method == "POST":
+        Employee.objects.all().delete()
+        messages.success(request, "All employees deleted successfully!")
+        return redirect("admin_tables")
+    return redirect("admin_tables")
+
+
+# ALLOWANCES TABLE
 # Add Allowance
 def add_allowance(request):
     if request.method == "POST":
         name = request.POST["name"]
-        calculation_type = request.POST["calculation_type"]
-        default_value = request.POST["default_value"]
 
         # Create and save the new allowance
         Allowance.objects.create(
             name=name,
-            calculation_type=calculation_type,
-            default_value=default_value,
         )
         messages.success(request, "Allowance added successfully!")
         return redirect("admin_tables")
@@ -262,18 +266,41 @@ def add_allowance(request):
     return redirect("admin_tables")
 
 
+# Edit Allowance
+def edit_allowance(request, id):
+    allowance = get_object_or_404(Allowance, id=id)
+
+    if request.method == "POST":
+        allowance.name = request.POST["name"]
+        allowance.save()
+
+        messages.success(request, "Allowance updated successfully!")
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
+# Delete Allowance View
+def delete_allowance(request, id):
+    allowance = get_object_or_404(Allowance, id=id)
+
+    if request.method == "POST":
+        allowance.delete()
+        messages.success(request, f"Allowance '{allowance.name}' deleted successfully!")
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
+# DEDUCTIONS TABLE
 # Add Deduction
 def add_deduction(request):
     if request.method == "POST":
         name = request.POST["name"]
-        calculation_type = request.POST["calculation_type"]
-        default_value = request.POST["default_value"]
 
         # Create and save the new deduction
         Deduction.objects.create(
             name=name,
-            calculation_type=calculation_type,
-            default_value=default_value,
         )
 
         messages.success(request, "Deduction added successfully!")
@@ -282,6 +309,33 @@ def add_deduction(request):
     return redirect("admin_tables")
 
 
+# Edit Deduction View
+def edit_deduction(request, id):
+    deduction = get_object_or_404(Deduction, id=id)
+
+    if request.method == "POST":
+        deduction.name = request.POST["name"]
+        deduction.save()
+
+        messages.success(request, "Deduction updated successfully!")
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
+# Delete Deduction View
+def delete_deduction(request, id):
+    deduction = get_object_or_404(Deduction, id=id)
+
+    if request.method == "POST":
+        deduction.delete()
+        messages.success(request, f"Deduction '{deduction.name}' deleted successfully!")
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
+# DEPARTMENTS TABLE
 # Add Department
 def add_department(request):
     if request.method == "POST":
@@ -291,21 +345,6 @@ def add_department(request):
         Department.objects.create(name=name)
 
         messages.success(request, "Department added successfully!")
-        return redirect("admin_tables")
-
-    return redirect("admin_tables")
-
-
-# Add Branch
-def add_branch(request):
-    if request.method == "POST":
-        name = request.POST["name"]
-        address = request.POST["address"]
-
-        # Create and save the new branch
-        Branch.objects.create(name=name, address=address)
-
-        messages.success(request, "Branch added successfully!")
         return redirect("admin_tables")
 
     return redirect("admin_tables")
@@ -335,6 +374,36 @@ def edit_department(request, id):
     )
 
 
+# Delete Department View
+def delete_department(request, id):
+    department = get_object_or_404(Department, id=id)
+
+    if request.method == "POST":
+        department.delete()
+        messages.success(
+            request, f"Department '{department.name}' deleted successfully!"
+        )
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
+# BRANCHES TABLE
+# Add Branch
+def add_branch(request):
+    if request.method == "POST":
+        name = request.POST["name"]
+        address = request.POST["address"]
+
+        # Create and save the new branch
+        Branch.objects.create(name=name, address=address)
+
+        messages.success(request, "Branch added successfully!")
+        return redirect("admin_tables")
+
+    return redirect("admin_tables")
+
+
 # Edit Branch
 def edit_branch(request, id):
     branch = get_object_or_404(Branch, id=id)
@@ -357,38 +426,6 @@ def edit_branch(request, id):
     )
 
 
-# Edit Allowance
-def edit_allowance(request, id):
-    allowance = get_object_or_404(Allowance, id=id)
-
-    if request.method == "POST":
-        allowance.name = request.POST["name"]
-        allowance.calculation_type = request.POST["calculation_type"]
-        allowance.default_value = request.POST["default_value"]
-        allowance.save()
-
-        messages.success(request, "Allowance updated successfully!")
-        return redirect("admin_tables")
-
-    return redirect("admin_tables")
-
-
-# Edit Deduction View
-def edit_deduction(request, id):
-    deduction = get_object_or_404(Deduction, id=id)
-
-    if request.method == "POST":
-        deduction.name = request.POST["name"]
-        deduction.calculation_type = request.POST["calculation_type"]
-        deduction.default_value = request.POST["default_value"]
-        deduction.save()
-
-        messages.success(request, "Deduction updated successfully!")
-        return redirect("admin_tables")
-
-    return redirect("admin_tables")
-
-
 # Delete Branch View
 def delete_branch(request, id):
     branch = get_object_or_404(Branch, id=id)
@@ -401,42 +438,167 @@ def delete_branch(request, id):
     return redirect("admin_tables")
 
 
-# Delete Department View
-def delete_department(request, id):
-    department = get_object_or_404(Department, id=id)
-
+# JOB GROUPS TABLE
+# Add Job Group
+def add_job_group(request):
     if request.method == "POST":
-        department.delete()
-        messages.success(
-            request, f"Department '{department.name}' deleted successfully!"
+        name = request.POST["name"]
+        base_salary = request.POST["base_salary"]
+
+        # Create and save the new job group
+        job_group = JobGroup.objects.create(name=name, base_salary=base_salary)
+
+        # Parse the allowances and deductions from the request
+        allowances = request.POST.getlist("allowances[]")
+        deductions = request.POST.getlist("deductions[]")
+        allowance_calculation_types = request.POST.getlist(
+            "allowance_calculation_types[]"
         )
+        allowance_values = request.POST.getlist("allowance_values[]")
+        deduction_calculation_types = request.POST.getlist(
+            "deduction_calculation_types[]"
+        )
+        deduction_values = request.POST.getlist("deduction_values[]")
+
+        # Save the allowances
+        for i in range(len(allowances)):
+            allowance = Allowance.objects.get(id=allowances[i])
+            value = allowance_values[i]
+            calculation_type = allowance_calculation_types[i]
+            # Create and save the new JobGroupAllowance
+            JobGroupAllowance.objects.create(
+                job_group=job_group,
+                allowance=allowance,
+                value=value,
+                calculation_type=calculation_type,
+            )
+
+        # Save the deductions
+        for i in range(len(deductions)):
+            deduction = Deduction.objects.get(id=deductions[i])
+            value = deduction_values[i]
+            calculation_type = deduction_calculation_types[i]
+            # Create and save the new JobGroupDeduction
+            JobGroupDeduction.objects.create(
+                job_group=job_group,
+                deduction=deduction,
+                value=value,
+                calculation_type=calculation_type,
+            )
+
+        messages.success(request, "Job Group added successfully!")
         return redirect("admin_tables")
 
     return redirect("admin_tables")
 
 
-# Delete Allowance View
-def delete_allowance(request, id):
-    allowance = get_object_or_404(Allowance, id=id)
+# Edit Job Group
+def edit_job_group(request, job_group_id):
+    # Retrieve the job group by id
+    job_group = get_object_or_404(JobGroup, id=job_group_id)
 
     if request.method == "POST":
-        allowance.delete()
-        messages.success(request, f"Allowance '{allowance.name}' deleted successfully!")
+        # Check if 'user' is part of the POST data and update accordingly
+        name = request.POST["name"]
+        base_salary = request.POST["base_salary"]
+
+        # Update job group details
+        job_group.name = name
+        job_group.base_salary = base_salary
+        job_group.save()
+
+        # Debug
+        print(request.POST.getlist("allowances[]"))
+        print(request.POST.getlist("allowance_calculation_types[]"))
+        print(request.POST.getlist("allowance_values[]"))
+        print(request.POST.getlist("deductions[]"))
+        print(request.POST.getlist("deduction_calculation_types[]"))
+        print(request.POST.getlist("deduction_values[]"))
+
+        # Parse the allowances and deductions from the request
+        allowances = request.POST.getlist("allowances[]")
+        deductions = request.POST.getlist("deductions[]")
+        allowance_calculation_types = request.POST.getlist(
+            "allowance_calculation_types[]"
+        )
+        deduction_calculation_types = request.POST.getlist(
+            "deduction_calculation_types[]"
+        )
+        allowance_values = request.POST.getlist("allowance_values[]")
+        deduction_values = request.POST.getlist("deduction_values[]")
+
+        # Delete the existing job group allowances and deductions
+        job_group.jobgroupallowance_set.all().delete()
+        job_group.jobgroupdeduction_set.all().delete()
+
+        # Save the allowances
+        for i in range(len(allowances)):
+            # Skip empty entries
+            if not allowances[i] or allowance_values[i] == "":
+                continue
+
+            allowance = Allowance.objects.get(id=allowances[i])
+            value = allowance_values[i]
+            calculation_type = allowance_calculation_types[i]
+            # Create and save the new JobGroupAllowance
+            JobGroupAllowance.objects.create(
+                job_group=job_group,
+                allowance=allowance,
+                value=value,
+                calculation_type=calculation_type,
+            )
+
+        # Save the deductions
+        for i in range(len(deductions)):
+            # Skip empty entries
+            if not deductions[i] or deduction_values[i] == "":
+                continue
+
+            deduction = Deduction.objects.get(id=int(deductions[i]))
+            value = deduction_values[i]
+            calculation_type = deduction_calculation_types[i]
+            # Create and save the new JobGroupDeduction
+            JobGroupDeduction.objects.create(
+                job_group=job_group,
+                deduction=deduction,
+                value=value,
+                calculation_type=calculation_type,
+            )
+
+        messages.success(request, "Job Group updated successfully!")
         return redirect("admin_tables")
 
-    return redirect("admin_tables")
+
+# Add Allowance Row
+def add_allowance_row(request):
+    job_group_id = request.POST.get("job_group_id")  # Get the job group ID from HTMX
+    allowances = Allowance.objects.all()  # Fetch allowances
+    context = {"job_group_id": job_group_id, "allowances": allowances}
+    return render(request, "partials/allowance_row.html", context)
 
 
-# Delete Deduction View
-def delete_deduction(request, id):
-    deduction = get_object_or_404(Deduction, id=id)
-
+# Delete Allowance Row
+def delete_allowance_row(request):
     if request.method == "POST":
-        deduction.delete()
-        messages.success(request, f"Deduction '{deduction.name}' deleted successfully!")
-        return redirect("admin_tables")
+        return HttpResponse("")
+    else:
+        return HttpResponse(status=404)
 
-    return redirect("admin_tables")
+
+# Add Deduction Row
+def add_deduction_row(request):
+    job_group_id = request.POST.get("job_group_id")  # Get the job group ID from HTMX
+    deductions = Deduction.objects.all()  # Fetch deductions
+    context = {"job_group_id": job_group_id, "deductions": deductions}
+    return render(request, "partials/deduction_row.html", context)
+
+
+# Delete Deduction Row
+def delete_deduction_row(request):
+    if request.method == "POST":
+        return HttpResponse("")
+    else:
+        return HttpResponse(status=404)
 
 
 # Delete Job Group
@@ -457,14 +619,5 @@ def delete_all_job_groups(request):
     if request.method == "POST":
         JobGroup.objects.all().delete()
         messages.success(request, "All job groups deleted successfully!")
-        return redirect("admin_tables")
-    return redirect("admin_tables")
-
-
-# Delete All Employees
-def delete_all_employees(request):
-    if request.method == "POST":
-        Employee.objects.all().delete()
-        messages.success(request, "All employees deleted successfully!")
         return redirect("admin_tables")
     return redirect("admin_tables")

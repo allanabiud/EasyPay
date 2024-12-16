@@ -1,0 +1,30 @@
+<div class="row mb-2 allowance-row">
+  <div class="col-md-5">
+    <select class="form-select" name="allowances[]" required>
+      <option value="" selected>Select Allowance</option>
+      {% for allowance in allowances %}<option value="{{ allowance.id }}">{{ allowance.name }}</option>{% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <select class="form-select" name="allowance_calculation_types[]" required>
+      <option value="fixed" selected>Fixed Amount</option>
+      <option value="percentage">Percentage</option>
+    </select>
+  </div>
+  <div class="col-md-3">
+    <input type="number"
+           class="form-control"
+           name="allowance_values[]"
+           step="0.01"
+           required>
+  </div>
+  <div class="col-md-1">
+    <button type="button"
+            class="btn btn-danger"
+            hx-post="{% url 'delete_allowance_row' %}"
+            hx-target="closest .allowance-row"
+            hx-swap="outerHTML">
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+</div>

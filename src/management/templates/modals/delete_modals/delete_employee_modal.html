@@ -1,0 +1,31 @@
+<!-- Delete Employee Modal -->
+<div class="modal fade"
+     id="deleteEmployeeModal-{{ employee.id_number }}"
+     tabindex="-1"
+     aria-labelledby="deleteEmployeeModalLabel-{{ employee.id_number }}"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'delete_employee' employee.id_number %}">
+        {% csrf_token %}
+        <div class="modal-header text-white bg-danger">
+          <h5 class="modal-title"
+              id="deleteEmployeeModalLabel-{{ employee.id_number }}">Delete Employee</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete the employee <strong>{{ employee.first_name }} {{ employee.last_name }}</strong>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

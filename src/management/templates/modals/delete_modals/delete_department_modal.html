@@ -1,0 +1,30 @@
+<!-- Delete Department Modal (Dynamic ID for each department) -->
+<div class="modal fade"
+     id="deleteDepartmentModal{{ department.id }}"
+     tabindex="-1"
+     aria-labelledby="deleteDepartmentModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form method="POST" action="{% url 'delete_department' department.id %}">
+        {% csrf_token %}
+        <div class="modal-header text-white bg-danger">
+          <h5 class="modal-title" id="deleteDepartmentModalLabel">Delete Department</h5>
+          <button type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete the department <strong>{{ department.name }}</strong>?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

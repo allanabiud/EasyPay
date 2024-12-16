@@ -1,15 +1,15 @@
-<!-- Add Allowance Modal -->
+<!-- Edit Allowance Modal (Dynamic ID for each allowance) -->
 <div class="modal fade"
-     id="addAllowanceModal"
+     id="editAllowanceModal{{ allowance.id }}"
      tabindex="-1"
-     aria-labelledby="addAllowanceModalLabel"
+     aria-labelledby="editAllowanceModalLabel"
      aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="{% url 'add_allowance' %}">
+      <form method="POST" action="{% url 'edit_allowance' allowance.id %}">
         {% csrf_token %}
         <div class="modal-header text-white" style="background-color: #3626a7;">
-          <h5 class="modal-title" id="addAllowanceModalLabel">Add Allowance</h5>
+          <h5 class="modal-title" id="editAllowanceModalLabel">Edit Allowance</h5>
           <button type="button"
                   class="btn-close"
                   data-bs-dismiss="modal"
@@ -22,25 +22,7 @@
                    class="form-control"
                    id="allowanceName"
                    name="name"
-                   required>
-          </div>
-          <div class="mb-3">
-            <label for="calculationType" class="form-label">Calculation Type</label>
-            <select class="form-select"
-                    id="calculationType"
-                    name="calculation_type"
-                    required>
-              <option value="percentage">Percentage</option>
-              <option value="fixed">Fixed Amount</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label for="defaultValue" class="form-label">Default Value</label>
-            <input type="number"
-                   step="0.01"
-                   class="form-control"
-                   id="defaultValue"
-                   name="default_value"
+                   value="{{ allowance.name }}"
                    required>
           </div>
         </div>

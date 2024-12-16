@@ -43,83 +43,10 @@
             </button>
           </td>
         </tr>
-        <!-- Edit Branch Modal (Dynamic ID for each branch) -->
-        <div class="modal fade"
-             id="editBranchModal{{ branch.id }}"
-             tabindex="-1"
-             aria-labelledby="editBranchModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form method="POST" action="{% url 'edit_branch' branch.id %}">
-                {% csrf_token %}
-                <div class="modal-header text-white" style="background-color: #3626a7;">
-                  <h5 class="modal-title" id="editBranchModalLabel">Edit Branch</h5>
-                  <button type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="background-color: #dbdbdb;">
-                  <div class="mb-3">
-                    <label for="branchName" class="form-label">Branch Name</label>
-                    <input type="text"
-                           class="form-control"
-                           id="branchName"
-                           name="name"
-                           value="{{ branch.name }}"
-                           required>
-                  </div>
-                  <div class="mb-3">
-                    <label for="branchAddress" class="form-label">Address</label>
-                    <input type="text"
-                           class="form-control"
-                           id="branchAddress"
-                           name="address"
-                           value="{{ branch.address }}"
-                           required>
-                  </div>
-                </div>
-                <div class="modal-footer" style="background-color: #dbdbdb;">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit"
-                          class="btn text-white"
-                          style="background-color: #3626a7">Save</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <!-- Delete Branch Modal (Dynamic ID for each branch) -->
-        <div class="modal fade"
-             id="deleteBranchModal{{ branch.id }}"
-             tabindex="-1"
-             aria-labelledby="deleteBranchModalLabel"
-             aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <form method="POST" action="{% url 'delete_branch' branch.id %}">
-                {% csrf_token %}
-                <div class="modal-header text-white bg-danger">
-                  <h5 class="modal-title" id="deleteBranchModalLabel">Delete Branch</h5>
-                  <button type="button"
-                          class="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <p>
-                    Are you sure you want to delete the branch <strong>{{ branch.name }}</strong> located at <strong>{{ branch.address }}</strong>?
-                  </p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="submit" class="btn btn-danger">Delete</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        <!-- Edit Branch Modal -->
+        {% include "modals/edit_modals/edit_branch_modal.html" %}
+        <!-- Delete Branch Modal -->
+        {% include "modals/delete_modals/delete_branch_modal.html" %}
       {% endfor %}
     </tbody>
   </table>

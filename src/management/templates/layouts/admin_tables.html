@@ -34,7 +34,7 @@
                   </button>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="{% url 'account_settings' %}">
+                      <a class="dropdown-item" href="">
                         <i class="bi bi-person-gear me-1"></i>
                         <span>Account Settings</span></a>
                     </li>
@@ -135,12 +135,17 @@
     </main>
   </div>
   <!-- MODALS -->
-  {% include "add_modals/add_employee_modal.html" %}
-  {% include "add_modals/add_jobgroup_modal.html" %}
-  {% include "add_modals/add_allowance_modal.html" %}
-  {% include "add_modals/add_deduction_modal.html" %}
-  {% include "add_modals/add_branch_modal.html" %}
-  {% include "add_modals/add_department_modal.html" %}
+  <!-- Add Modals -->
+  {% include "modals/add_modals/add_employee_modal.html" %}
+  {% include "modals/add_modals/add_jobgroup_modal.html" %}
+  {% include "modals/add_modals/add_allowance_modal.html" %}
+  {% include "modals/add_modals/add_deduction_modal.html" %}
+  {% include "modals/add_modals/add_branch_modal.html" %}
+  {% include "modals/add_modals/add_department_modal.html" %}
+  <!-- Edit Modals -->
+  {% include "modals/edit_modals/edit_jobgroup_modal.html" %}
+  <!-- Delete All Modals -->
+  {% include "modals/delete_modals/delete_all/delete_all_employees_modal.html" %}
   <!-- JAVASCRIPTS -->
   <script src="{% static 'js/datatables.js' %}"></script>
 {% endblock content %}

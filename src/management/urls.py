@@ -19,6 +19,11 @@ urlpatterns = [
         management_views.delete_employee,
         name="delete_employee",
     ),
+    path(
+        "delete_all_employees/",
+        management_views.delete_all_employees,
+        name="delete_all_employees",
+    ),
     path("add_allowance/", management_views.add_allowance, name="add_allowance"),
     path(
         "allowance/edit/<int:id>/",
@@ -62,6 +67,32 @@ urlpatterns = [
         management_views.delete_deduction,
         name="delete_deduction",
     ),
+    path("add_job_group/", management_views.add_job_group, name="add_job_group"),
+    path(
+        "edit_job_group/<int:job_group_id>/",
+        management_views.edit_job_group,
+        name="edit_job_group",
+    ),
+    path(
+        "add_allowance_row/",
+        management_views.add_allowance_row,
+        name="add_allowance_row",
+    ),
+    path(
+        "delete_allowance_row/",
+        management_views.delete_allowance_row,
+        name="delete_allowance_row",
+    ),
+    path(
+        "add_deduction_row/",
+        management_views.add_deduction_row,
+        name="add_deduction_row",
+    ),
+    path(
+        "delete_deduction_row/",
+        management_views.delete_deduction_row,
+        name="delete_deduction_row",
+    ),
     path(
         "delete_job_group/<int:id>/",
         management_views.delete_job_group,
@@ -71,10 +102,5 @@ urlpatterns = [
         "delete_all_job_groups/",
         management_views.delete_all_job_groups,
         name="delete_all_job_groups",
-    ),
-    path(
-        "delete_all_employees/",
-        management_views.delete_all_employees,
-        name="delete_all_employees",
     ),
 ]
