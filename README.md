@@ -4,7 +4,8 @@ A comprehensive payroll management system designed to streamline employee salary
 
 ## Features
 
-- User-friendly dashboard for employees to view their salary information.
+- User-friendly dashboards for administrators to manage employees and their salaries.
+- Intuitive dashboards for employees to view their salary information.
 - Informative salary breakdown for employees to understand their salary.
 - Report generation for employees to view their salary breakdown.
 
@@ -16,8 +17,18 @@ git clone https://github.com/abiudy/EasyPay.git && cd EasyPay
 
 ## Running the application
 
-```
+- Linux
+
+```bash
 source venv/bin/activate
+cd src
+python manage.py runserver
+```
+
+- Windows
+
+```bash
+source venv/bin/activate.ps1
 cd src
 python manage.py runserver
 ```
