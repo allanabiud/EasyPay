@@ -131,28 +131,47 @@
       </div>
       <!-- Second Card Row -->
       <div class="row mt-4">
-        <div class= "d-flex">
+        <div class= "col-lg-6 col-md-12 col-sm-12">
           <div class="card h-100 w-100 shadow-sm">
-            <div class="card-header d-flex align-items-center justify-content-between">
-              <div class="d-flex align-items-center">
-                <i class="bi bi-bar-chart-fill me-2" style="font-size: 1.5rem"></i>
-                <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Employee Distribution</h5>
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-bar-chart-fill me-2" style="font-size: 1.5rem"></i>
+                  <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Employee Distribution</h5>
+                </div>
+                <div class="form-group">
+                  <select id="chartSelector"
+                          class="form-select form-select-sm w-auto"
+                          style="background-color: transparent;
+                                 font-weight: bold;
+                                 border: none;
+                                 padding: 0.25rem 1.8rem">
+                    <option value="jobGroupChart">by Job Group</option>
+                    <option value="branchChart">by Branch</option>
+                    <option value="departmentChart">by Department</option>
+                  </select>
+                </div>
               </div>
-              <div class="form-group">
-                <select id="distributionType"
-                        class="form-select"
-                        style="background-color: transparent;
-                               font-weight: bold;
-                               border: none;
-                               padding: 0.25rem 0.5rem">
-                  <option value="jobGroup">Job Group</option>
-                  <option value="branch">Branches</option>
-                  <option value="department">Departments</option>
-                </select>
+              <div class="mt-2 mb-0">
+                <canvas id="jobGroupChart" class="chart" height="200"></canvas>
+                <canvas id="branchChart" class="chart d-none" height="200"></canvas>
+                <canvas id="departmentChart" class="chart d-none" height="200"></canvas>
               </div>
             </div>
+          </div>
+        </div>
+        <div class= "col-lg-6 col-md-12 col-sm-12">
+          <div class="card h-100 w-100 shadow-sm">
             <div class="card-body">
-              <canvas id="employeeDistributionChart"></canvas>
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-graph-up me-2" style="font-size: 1.5rem"></i>
+                  <h5 class="card-title fw-bold mb-0" style="font-size: 1.5rem;">Net Salary Distribution per Job Group</h5>
+                </div>
+              </div>
+              <div class="mt-2 mb-0">
+                <canvas id="salaryGroupChart" class="chart" height="200"></canvas>
+              </div>
             </div>
           </div>
         </div>
@@ -160,4 +179,19 @@
     </main>
   </div>
   <script src="{% static 'js/tab_navigation.js' %}"></script>
+  <script>
+    // Job Group Chart Data
+    const jobGroupLabels = {{ job_group_labels|safe }};
+    const jobGroupCounts = {{ job_group_counts|safe }};
+    // Branch Chart Data
+    const branchLabels = {{ branch_labels|safe }};
+    const branchCounts = {{ branch_counts|safe }};
+    // Department Chart Data
+    const departmentLabels = {{ department_labels|safe }};
+    const departmentCounts = {{ department_counts|safe }};
+    // Salary Group Chart Data
+    const salaryGroupLabels = {{ salary_group_labels|safe }};
+    const salaryGroupValues = {{ salary_group_values|safe }};
+  </script>
+  <script src="{% static 'js/admin_charts.js' %}"></script>
 {% endblock content %}

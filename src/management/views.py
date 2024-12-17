@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
@@ -33,6 +34,55 @@ def admin_dashboard(request):
     num_departments = len(departments)
     num_branches = len(branches)
 
+    # Employee distribution by Job Group
+    job_group_distribution = JobGroup.objects.annotate(
+        employee_count=Count("employee")
+    ).values("name", "employee_count")
+    # Sort the job group distribution alphabetically
+    job_group_distribution = sorted(
+        job_group_distribution, key=lambda group: group["name"]
+    )
+
+    # Employee distribution by Branch
+    branch_distribution = Branch.objects.annotate(
+        employee_count=Count("employee")
+    ).values("name", "employee_count")
+    # Sort the branches alphabetically
+    branch_distribution = sorted(branch_distribution, key=lambda branch: branch["name"])
+
+    # Employee distribution by Department
+    department_distribution = Department.objects.annotate(
+        employee_count=Count("employee")
+    ).values("name", "employee_count")
+    # Sort the departments alphabetically
+    department_distribution = sorted(
+        department_distribution, key=lambda department: department["name"]
+    )
+
+    # Prepare data for the Salary Distribution Chart
+    salary_group_data = [
+        {"label": job_group.name, "value": float(job_group.calculate_net_salary())}
+        for job_group in job_groups
+    ]
+    # Sort the data alphabetically by label (job group name)
+    salary_group_data.sort(key=lambda x: x["label"])
+
+    # Separate sorted labels and values
+    salary_group_labels = [item["label"] for item in salary_group_data]
+    salary_group_values = [item["value"] for item in salary_group_data]
+
+    # Prepare labels and data for the charts
+    job_group_labels = [job_group["name"] for job_group in job_group_distribution]
+    job_group_counts = [
+        job_group["employee_count"] for job_group in job_group_distribution
+    ]
+    branch_labels = [branch["name"] for branch in branch_distribution]
+    branch_counts = [branch["employee_count"] for branch in branch_distribution]
+    department_labels = [department["name"] for department in department_distribution]
+    department_counts = [
+        department["employee_count"] for department in department_distribution
+    ]
+
     context = {
         "employees": employees,
         "job_groups": job_groups,
@@ -42,6 +92,14 @@ def admin_dashboard(request):
         "num_job_groups": num_job_groups,
         "num_departments": num_departments,
         "num_branches": num_branches,
+        "job_group_labels": job_group_labels,
+        "job_group_counts": job_group_counts,
+        "branch_labels": branch_labels,
+        "branch_counts": branch_counts,
+        "department_labels": department_labels,
+        "department_counts": department_counts,
+        "salary_group_labels": salary_group_labels,
+        "salary_group_values": salary_group_values,
     }
 
     return render(request, "layouts/admin_dashboard.html", context)

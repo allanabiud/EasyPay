@@ -60,15 +60,15 @@ new Chart(ctxAllowance, {
         label: "Allowances",
         data: allowanceData.values, // Allowance values
         backgroundColor: [
-          "#1D537D",
-          "#632516",
-          "#3626a7",
-          "#0d0106",
-          "#657ed4",
-          "#6c756b",
-          "#4B1D59",
-          "#db7f67",
-        ], // Colors for segments
+          "#1D537D", // Dark Blue
+          "#632516", // Dark Red
+          "#3626a7", // Dark Purple
+          "#0d0106", // Very Dark Brown
+          "#657ed4", // Light Blue
+          "#6c756b", // Olive Green
+          "#4B1D59", // Deep Pink
+          "#db7f67", // Soft Orange
+        ].map((color) => hexToRgba(color, 0.8)), // Apply 0.8 transparency
         borderWidth: 0,
       },
     ],
@@ -92,6 +92,54 @@ new Chart(ctxAllowance, {
       },
     },
     cutout: "70%",
+    hover: {
+      mode: "nearest", // Ensures the hover is detected on the nearest segment
+      animationDuration: 300, // Smooth animation on hover
+      onHover: function (event, chartElement) {
+        const chart = this.chart;
+        const dataset = chart.data.datasets[0];
+
+        // Reset all segments to normal size
+        dataset.borderWidth = 0;
+
+        // If a segment is hovered, increase its size
+        if (chartElement.length > 0) {
+          const segmentIndex = chartElement[0].index;
+          const segment = chartElement[0];
+
+          // Increase the size of the hovered segment by adjusting radius
+          segment.radius = segment._model.fullRadius * 1.2; // 20% larger on hover
+          segment.borderWidth = 2; // Optional: border width increase on hover
+        }
+
+        // Update chart to reflect changes
+        chart.update();
+      },
+      onLeave: function (event, chartElement) {
+        const chart = this.chart;
+        const dataset = chart.data.datasets[0];
+
+        // Reset radius and border width when hover ends
+        dataset.data.forEach(function (data, index) {
+          const segment = chart.getDatasetMeta(0).data[index];
+          segment.radius = segment._model.fullRadius; // Reset to original radius
+          segment.borderWidth = 0; // Reset border width
+        });
+
+        // Update chart to reflect reset changes
+        chart.update();
+      },
+    },
+    animation: {
+      animateScale: true, // Animate the scale when hovering
+      animateRotate: true, // Animate rotation
+    },
+    elements: {
+      arc: {
+        borderWidth: 2,
+        borderColor: "#fff", // Optional: adds a border to the segments
+      },
+    },
   },
 });
 
@@ -109,15 +157,15 @@ new Chart(ctxDeduction, {
         label: "Deductions",
         data: deductionData.values, // Deduction values
         backgroundColor: [
-          "#1D537D",
-          "#632516",
-          "#3626a7",
-          "#0d0106",
-          "#657ed4",
-          "#6c756b",
-          "#4B1D59",
-          "#db7f67",
-        ], // Colors for segments
+          "#1D537D", // Dark Blue
+          "#632516", // Dark Red
+          "#3626a7", // Dark Purple
+          "#0d0106", // Very Dark Brown
+          "#657ed4", // Light Blue
+          "#6c756b", // Olive Green
+          "#4B1D59", // Deep Pink
+          "#db7f67", // Soft Orange
+        ].map((color) => hexToRgba(color, 0.8)), // Apply 0.8 transparency
         borderWidth: 0,
       },
     ],
@@ -141,5 +189,61 @@ new Chart(ctxDeduction, {
       },
     },
     cutout: "70%",
+    hover: {
+      mode: "nearest", // Ensures the hover is detected on the nearest segment
+      animationDuration: 300, // Smooth animation on hover
+      onHover: function (event, chartElement) {
+        const chart = this.chart;
+        const dataset = chart.data.datasets[0];
+
+        // Reset all segments to normal size
+        dataset.borderWidth = 0;
+
+        // If a segment is hovered, increase its size
+        if (chartElement.length > 0) {
+          const segmentIndex = chartElement[0].index;
+          const segment = chartElement[0];
+
+          // Increase the size of the hovered segment by adjusting radius
+          segment.radius = segment._model.fullRadius * 1.2; // 20% larger on hover
+          segment.borderWidth = 2; // Optional: border width increase on hover
+        }
+
+        // Update chart to reflect changes
+        chart.update();
+      },
+      onLeave: function (event, chartElement) {
+        const chart = this.chart;
+        const dataset = chart.data.datasets[0];
+
+        // Reset radius and border width when hover ends
+        dataset.data.forEach(function (data, index) {
+          const segment = chart.getDatasetMeta(0).data[index];
+          segment.radius = segment._model.fullRadius; // Reset to original radius
+          segment.borderWidth = 0; // Reset border width
+        });
+
+        // Update chart to reflect reset changes
+        chart.update();
+      },
+    },
+    animation: {
+      animateScale: true, // Animate the scale when hovering
+      animateRotate: true, // Animate rotation
+    },
+    elements: {
+      arc: {
+        borderWidth: 2,
+        borderColor: "#fff", // Optional: adds a border to the segments
+      },
+    },
   },
 });
+
+// Function to convert hex color to RGBA (with transparency)
+function hexToRgba(hex, alpha = 0.8) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`; // Less transparent with alpha = 0.8
+}
