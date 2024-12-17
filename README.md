@@ -28,7 +28,7 @@ python manage.py runserver
 - Windows
 
 ```bash
-source venv/bin/activate.ps1
+source .\venv\bin\activate.ps1
 cd src
 python manage.py runserver
 ```
