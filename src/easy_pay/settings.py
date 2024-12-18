@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-_&5z%@e6guz&3=)^jn83y!7*6xs-pjgnwohsy)49ooq!hk#0%6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -169,7 +169,6 @@ STATIC_URL = "static/"
 
 # CRISPY FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 # Default primary key field type

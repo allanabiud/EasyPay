@@ -1,3 +1,4 @@
+{% load crispy_forms_tags %}
 <!-- Add Department Modal -->
 <div class="modal fade"
      id="addDepartmentModal"
@@ -6,7 +7,9 @@
      aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="{% url 'add_department' %}">
+      <form method="POST"
+            action="{% url 'add_department' %}"
+            id="department-form">
         {% csrf_token %}
         <div class="modal-header text-white" style="background-color: #3626a7;">
           <h5 class="modal-title fw-bold" id="addDepartmentModalLabel">Add Department</h5>
@@ -16,21 +19,14 @@
                   aria-label="Close"></button>
         </div>
         <div class="modal-body" style="background-color: #dbdbdb;">
-          <div class="mb-3">
-            <div class="form-floating">
-              <input type="text"
-                     class="form-control"
-                     id="departmentName"
-                     name="name"
-                     placeholder="Department Name"
-                     required>
-              <label for="departmentName" class="form-label">Department Name</label>
-            </div>
-          </div>
+          <!-- Render the form -->
+          <div class="mb-3">{% crispy department_form %}</div>
         </div>
         <div class="modal-footer" style="background-color: #dbdbdb;">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit"
+          <!-- Submit the form -->
+          <button type="Submit"
+                  form="department-form"
                   class="btn text-white"
                   style="background-color: #3626a7">Save</button>
         </div>
