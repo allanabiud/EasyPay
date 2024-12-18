@@ -7,7 +7,6 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import DepartmentForm
 from .models import (
     Allowance,
     Branch,
@@ -189,9 +188,6 @@ def admin_tables(request):
                 "job_group_deductions": job_group_deductions,
             }
         )
-    # Forms
-    department_form = DepartmentForm()
-
     context = {
         "employees": employees,
         "job_groups": job_groups,
@@ -201,7 +197,6 @@ def admin_tables(request):
         "users": users,
         "allowances": allowances,
         "deductions": deductions,
-        "department_form": department_form,
     }
 
     return render(request, "layouts/admin_tables.html", context)
@@ -407,12 +402,10 @@ def delete_deduction(request, id):
 # Add Department
 def add_department(request):
     if request.method == "POST":
-        form = DepartmentForm(request.POST)
-        if form.is_valid():
-            form.save()  # Saves the new department to the database
-            messages.success(request, "Department added successfully!")
-        else:
-            messages.error(request, "Failed to add department. Please check the form.")
+        name = request.POST["name"]
+        # Create and save the new department
+        Department.objects.create(name=name)
+        messages.success(request, "Department added successfully!")
         return redirect("admin_tables")
     return redirect("admin_tables")
 
