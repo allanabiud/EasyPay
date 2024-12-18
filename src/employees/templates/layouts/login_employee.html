@@ -12,7 +12,7 @@
             <img src="{% static 'images/logo-white.png' %}"
                  alt=""
                  width="48"
-                 height="64">
+                 height="68">
           </a>
         </div>
         <h4 class="mb-0">Employee Login</h4>
@@ -29,7 +29,7 @@
                    required>
             <label for="username" class="form-label text-black-50">Username</label>
           </div>
-          <div class="form-floating mb-3">
+          <div class="form-floating mb-1">
             <input type="password"
                    class="form-control"
                    name="password"
@@ -37,6 +37,8 @@
                    placeholder="Enter your password"
                    required>
             <label for="password" class="form-label text-black-50">Password</label>
+          </div>
+          <div class="mb-3 d-flex justify-content-between">
             <div class="form-check mt-3">
               <input class="form-check-input"
                      type="checkbox"
@@ -44,11 +46,11 @@
                      id="flexCheckDefault">
               <label class="form-check-label" for="flexCheckDefault">Remember Me</label>
             </div>
+            <div class="forgot-password-text mt-3 text-center">
+              <small><a href="{% url 'request_password_reset' %}">Forgot your password?</a></small>
+            </div>
           </div>
           <button type="submit" class="btn btn-primary w-100">Login</button>
-          <div class="forgot-password-text mt-3 text-center">
-            <small>Forgot your password? <a href="{% url 'request_password_reset' %}">Reset Password</a></small>
-          </div>
         </form>
       </div>
       <div class="card-footer text-center">

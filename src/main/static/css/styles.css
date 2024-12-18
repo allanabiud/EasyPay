@@ -111,11 +111,11 @@ a:hover {
   background-color: #3626a7;
 }
 .card {
-  border-radius: 20px;
   border: none;
   background-color: #dbdbdb;
   font-size: 1.1rem;
   font-weight: bold;
+  border-radius: 10px;
 }
 .card:hover {
   top: -5px;

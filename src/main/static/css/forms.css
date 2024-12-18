@@ -27,11 +27,12 @@ a:hover {
 }
 .card {
   width: 400px;
+  border-radius: 10px;
 }
 .form-card {
   background-color: #3626a7;
   color: #ffffff;
-  border-radius: 20px;
+  border-radius: 10px;
 }
 
 .password-reset-card {
@@ -47,10 +48,6 @@ a:hover {
   font-size: 1.1rem;
 }
 
-.admin-card {
-  border-width: 2px;
-  border-color: #ffffff;
-}
 .contact-us-card {
   /* remove width */
   width: 50%;
