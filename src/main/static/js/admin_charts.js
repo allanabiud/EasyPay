@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // Reduces transparency
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // Reduced transparency
   }
 
   // Job Group Chart (Bar Chart)
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       ],
     },
-    options: getChartOptions("Job Groups", "Number of Employees"),
+    options: getChartOptions("Job Groups", "Number of Employees", false),
   });
 
   // Branch Distribution Chart (Bar Chart)
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
         },
       ],
     },
-    options: getChartOptions("Branches", "Number of Employees"),
+    options: getChartOptions("Branches", "Number of Employees", false),
   });
 
   // Department Distribution Chart (Bar Chart)
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         ],
       },
-      options: getChartOptions("Departments", "Number of Employees"),
+      options: getChartOptions("Departments", "Number of Employees", false),
     },
   );
 
@@ -101,16 +101,16 @@ document.addEventListener("DOMContentLoaded", function () {
           },
         ],
       },
-      options: getChartOptions("Job Groups", "Salary Amount"),
+      options: getChartOptions("Job Groups", "Salary Amount", true),
     },
   );
 
   // Function to generate chart options
-  function getChartOptions(xLabel, yLabel) {
+  function getChartOptions(xLabel, yLabel, showLegend = true) {
     return {
       responsive: true,
       plugins: {
-        legend: { display: true }, // Show legend
+        legend: { display: showLegend }, // Control legend visibility
         tooltip: {
           callbacks: {
             label: function (context) {
@@ -152,13 +152,16 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  // Chart Switching Logic (Including the Salary Distribution Chart)
+  // Chart Switching Logic (Excluding the Salary Distribution Chart)
   const chartSelector = document.getElementById("chartSelector");
-  const charts = document.querySelectorAll(".chart");
+  const switchableCharts = document.querySelectorAll(
+    ".chart:not(#salaryGroupChart)",
+  ); // Exclude salary chart
+
   chartSelector.addEventListener("change", function () {
     const selectedChartId = this.value;
 
-    charts.forEach((chart) => {
+    switchableCharts.forEach((chart) => {
       if (chart.id === selectedChartId) {
         chart.classList.remove("d-none");
       } else {
@@ -166,4 +169,8 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // Ensure the salary chart is always visible
+  const salaryChart = document.getElementById("salaryGroupChart");
+  salaryChart.classList.remove("d-none");
 });
