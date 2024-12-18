@@ -62,7 +62,11 @@ def admin_dashboard(request):
 
     # Prepare data for the Salary Distribution Chart
     salary_group_data = [
-        {"label": job_group.name, "value": float(job_group.calculate_net_salary())}
+        {
+            "label": job_group.name,
+            "net_salary": float(job_group.calculate_net_salary()),
+            "base_salary": float(job_group.base_salary),
+        }
         for job_group in job_groups
     ]
     # Sort the data alphabetically by label (job group name)
@@ -70,7 +74,8 @@ def admin_dashboard(request):
 
     # Separate sorted labels and values
     salary_group_labels = [item["label"] for item in salary_group_data]
-    salary_group_values = [item["value"] for item in salary_group_data]
+    net_salary_values = [item["net_salary"] for item in salary_group_data]
+    base_salary_values = [item["base_salary"] for item in salary_group_data]
 
     # Prepare labels and data for the charts
     job_group_labels = [job_group["name"] for job_group in job_group_distribution]
@@ -100,7 +105,8 @@ def admin_dashboard(request):
         "department_labels": department_labels,
         "department_counts": department_counts,
         "salary_group_labels": salary_group_labels,
-        "salary_group_values": salary_group_values,
+        "net_salary_values": net_salary_values,
+        "base_salary_values": base_salary_values,
     }
 
     return render(request, "layouts/admin_dashboard.html", context)

@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // Reduced transparency to 0.8
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`; // Reduces transparency
   }
 
   // Job Group Chart (Bar Chart)
@@ -85,15 +85,23 @@ document.addEventListener("DOMContentLoaded", function () {
         datasets: [
           {
             label: "Net Salary by Job Group",
-            data: salaryGroupValues, // Data for total salaries
+            data: netSalaryValues, // Data for net salaries
             fill: false,
-            borderColor: "#4B1D59", // Deep Pink color with reduced transparency
+            borderColor: "#4B1D59", // Deep Pink color for Net Salary
+            tension: 0.4,
+            borderWidth: 2,
+          },
+          {
+            label: "Base Salary by Job Group",
+            data: baseSalaryValues, // Data for base salaries
+            fill: false,
+            borderColor: "#1D537D", // Dark Blue color for Base Salary
             tension: 0.4,
             borderWidth: 2,
           },
         ],
       },
-      options: getChartOptions("Job Groups", "Net Salary"),
+      options: getChartOptions("Job Groups", "Salary Amount"),
     },
   );
 
@@ -102,7 +110,17 @@ document.addEventListener("DOMContentLoaded", function () {
     return {
       responsive: true,
       plugins: {
-        legend: { display: false }, // Hide legend
+        legend: { display: true }, // Show legend
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              // Format numbers with commas in tooltips
+              return (
+                context.dataset.label + ": " + context.raw.toLocaleString()
+              );
+            },
+          },
+        },
       },
       scales: {
         x: {
@@ -126,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
             precision: 0, // No decimals
             font: { weight: "bold" },
             callback: function (value) {
-              return value;
+              return value.toLocaleString(); // Format numbers with commas
             },
           },
         },
@@ -134,9 +152,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
-  // Chart Switching Logic (Excluding the Salary Distribution Chart)
+  // Chart Switching Logic (Including the Salary Distribution Chart)
   const chartSelector = document.getElementById("chartSelector");
-  const charts = document.querySelectorAll(".chart:not(#salaryGroupChart)"); // Exclude the salary group chart from switching
+  const charts = document.querySelectorAll(".chart");
   chartSelector.addEventListener("change", function () {
     const selectedChartId = this.value;
 
