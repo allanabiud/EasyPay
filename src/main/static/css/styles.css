@@ -183,6 +183,7 @@ card {
 }
 
 /* When active */
+
 .accordion-button:not(.collapsed) {
   background-color: #1d537d;
   color: #fff;

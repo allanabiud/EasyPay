@@ -134,7 +134,7 @@ def login_admin(request):
             else:
                 messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Invalid form data.")
+            messages.error(request, "Invalid username or password.")
 
     elif request.method == "GET":
         login_form = AuthenticationForm()
