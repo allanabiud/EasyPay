@@ -1,3 +1,4 @@
+{% load static %}
 <!-- otp_email.html -->
 <!DOCTYPE html>
 <html>
@@ -47,7 +48,12 @@
   <body>
     <div class="container">
       <div class="header">
-        <h1>Your One-Time Password (OTP)</h1>
+        <!-- EasyPay Logo -->
+        <div class="easypay-logo">
+          <img src="{% static 'images/logo.png' %}" alt="" width="48" height="64">
+          <h1 class="mb-0">EasyPay</h1>
+        </div>
+        <h2>Your One-Time Password (OTP)</h2>
       </div>
       <div class="content">
         <p>Dear {{ first_name }},</p>
@@ -55,7 +61,6 @@
         <h2>{{ otp }}</h2>
         <p>This OTP will expire in 10 minutes.</p>
         <p>If you didn't request this OTP, please ignore this email.</p>
-        <a href="{{ verification_link }}" class="button">Verify Now</a>
       </div>
       <div class="footer">
         <p>

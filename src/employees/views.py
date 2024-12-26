@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from decimal import Decimal
 
 from django.contrib import messages
@@ -67,6 +68,9 @@ def employee_dashboard(request):
     total_allowance = sum(allowance_data["values"])  # Calculate total allowance
     total_deduction = sum(deduction_data["values"])  # Calculate total deduction
 
+    # Get the current time
+    current_time = datetime.now().strftime("%H:%M")
+
     context = {
         "employee": employee,
         "email": employee.email,
@@ -79,6 +83,7 @@ def employee_dashboard(request):
         "total_allowance": total_allowance,
         "total_deduction": total_deduction,
         "recent_logs": recent_logs,
+        "current_time": current_time,
     }
     return render(request, "layouts/employee_dashboard.html", context)
 

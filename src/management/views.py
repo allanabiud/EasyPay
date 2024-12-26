@@ -23,6 +23,7 @@ from .models import (
 @login_required(login_url="/login_admin/")
 def admin_dashboard(request):
     # Fetch number of employees, job groups, departments and branches
+    user = User.objects.get(id=request.user.id)
     employees = Employee.objects.all()
     job_groups = JobGroup.objects.all()
     departments = Department.objects.all()
@@ -89,6 +90,7 @@ def admin_dashboard(request):
     ]
 
     context = {
+        "user": user,
         "employees": employees,
         "job_groups": job_groups,
         "departments": departments,

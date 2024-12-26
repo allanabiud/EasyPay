@@ -32,7 +32,7 @@ def send_otp(employee):
         "otp": otp,
         "expiry_time": "10 minutes",
     }
-    subject = "Your EasyPay Account Verification OTP Code"
+    subject = f"{otp} is your EasyPay Account Verification OTP Code"
     plain_message = f"Dear {employee.first_name} {employee.last_name},\n\nYour OTP code is {otp}. It will expire in 10 minutes."
     html_message = render_to_string("otp_email.html", email_context)
 
