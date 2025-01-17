@@ -8,3 +8,6 @@
 
 # direnv
 .envrc
+
+# sqlite
+db.sqlite3
