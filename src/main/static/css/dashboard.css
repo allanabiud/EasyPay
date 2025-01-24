@@ -1,4 +1,7 @@
 /* Global Styles */
+* {
+  font-size: 15px;
+}
 body {
   background-color: #b5b5b5;
 }
